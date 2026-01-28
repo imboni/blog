@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+@font-main: "MoonStarsKai", "PingFang SC", "Microsoft YaHei UI", sans-serif;
+@bg-light: #ffffff;
+@fg-light: #0f1115;
+@bg-dark: #0b0d10;
+@fg-dark: #eef2f6;
+@border-light: #e6e6e6;
+@border-strong-light: #d7d7d7;
+@border-dark: #1f2937;
+@border-strong-dark: #334155;
+@accent-light: #111827;
+@accent-dark: #e2e8f0;
+@muted-light: rgba(17, 24, 39, 0.65);
+@muted-dark: rgba(226, 232, 240, 0.6);
+@subtle-light: rgba(15, 17, 21, 0.55);
+@subtle-dark: rgba(226, 232, 240, 0.55);
+@ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+.font-face(@name, @file, @weight) {
+  @path: "./assets/fonts/MoonStarsKaiTTF/@{file}";
+  @font-face {
+    font-family: @name;
+    src: url(@path) format("truetype");
+    font-weight: @weight;
+    font-style: normal;
+    font-display: swap;
+  }
+}
+
+.font-face("MoonStarsKai", "MoonStarsKai-Regular.ttf", 400);
+.font-face("MoonStarsKai", "MoonStarsKai-Bold.ttf", 700);
+
+:root {
+  color-scheme: light;
+  background-color: @bg-light;
+  color: @fg-light;
+  --bg: @bg-light;
+  --surface: @bg-light;
+  --border: @border-light;
+  --border-strong: @border-strong-light;
+  --accent: @accent-light;
+  --accent-muted: @muted-light;
+  --text-subtle: @subtle-light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  background-color: @bg-dark;
+  color: @fg-dark;
+  --bg: @bg-dark;
+  --surface: #0f1216;
+  --border: @border-dark;
+  --border-strong: @border-strong-dark;
+  --accent: @accent-dark;
+  --accent-muted: @muted-dark;
+  --text-subtle: @subtle-dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: @font-main;
+  -webkit-font-smoothing: antialiased;
+  background: var(--bg);
+  min-height: 100%;
+  font-size: 16px;
+  line-height: 1.85;
+  overflow-y: auto;
+}
+
+a,
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+.page-shell {
+  min-height: calc(100vh - 57px);
+  box-sizing: border-box;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+}
+
+.hover-float {
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.fade-up {
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.8s @ease-soft;
+  }
+
+  &-enter-from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+.page-fade {
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.85s @ease-soft;
+  }
+
+  &-enter-from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+}
+
+.markdown-body {
+  font-size: 1.02rem;
+  line-height: 1.9;
+  color: #1a1d24;
+
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 3rem 0 1.4rem;
+  }
+
+  p {
+    margin-bottom: 1.6rem;
+  }
+
+  img {
+    border-radius: 22px;
+    margin: 2.2rem 0;
+    box-shadow: 0 14px 40px rgba(10, 30, 60, 0.12);
+  }
+
+  pre {
+    background: #111827 !important;
+    padding: 1.5rem;
+    border-radius: 14px;
+    overflow-x: auto;
+    margin: 2rem 0;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+  }
+
+  code {
+    font-family: @font-main;
+    background: rgba(17, 24, 39, 0.08);
+    color: #111827;
+    padding: 0.2rem 0.45rem;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+}
+
+.loader-ring {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 17, 21, 0.2);
+  border-top-color: rgba(15, 17, 21, 0.7);
+  animation: loader-spin 0.9s linear infinite;
+}
+
+html[data-theme="dark"] {
+  body {
+    background: var(--bg);
+    color: #e5e7eb;
+  }
+
+  .text-slate-900 { color: #f8fafc; }
+  .text-slate-800 { color: #e5e7eb; }
+  .text-slate-600 { color: #cbd5e1; }
+  .text-slate-500 { color: #94a3b8; }
+  .text-slate-400 { color: #64748b; }
+  .hover\:text-slate-900:hover { color: #f8fafc; }
+  .hover\:opacity-70:hover { opacity: 0.85; }
+  .border-slate-200 { border-color: #1f2937; }
+  .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: #1f2937; }
+  .bg-white\/90 { background-color: rgba(12, 14, 18, 0.85); }
+
+  .loader-ring {
+    border-color: rgba(226, 232, 240, 0.2);
+    border-top-color: rgba(226, 232, 240, 0.7);
+  }
+
+  .markdown-body {
+    color: #e5e7eb;
+
+    h2 {
+      color: #f8fafc;
+    }
+
+    pre {
+      background: #0b1220 !important;
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    code {
+      background: rgba(226, 232, 240, 0.12);
+      color: #e2e8f0;
+    }
+  }
+}
+
+@keyframes loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
