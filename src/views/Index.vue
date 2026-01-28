@@ -110,12 +110,7 @@ const page = ref(1);
 const projects = computed(() => siteConfig.value.projects || []);
 const contacts = computed(() => siteConfig.value.contacts || []);
 
-const lastUpdatedLabel = computed(() => {
-  if (posts.value.length > 0) {
-    return posts.value[0].date;
-  }
-  return '—';
-});
+const lastUpdatedLabel = computed(() => posts.value.at(0)?.date ?? '—');
 
 const visiblePosts = computed(() => {
   return posts.value.slice(0, page.value * pageSize);
