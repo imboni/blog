@@ -111,8 +111,7 @@ const projects = computed(() => siteConfig.value.projects || []);
 const contacts = computed(() => siteConfig.value.contacts || []);
 
 const lastUpdatedLabel = computed(() => {
-  if (!posts.value.length) return '—';
-  return posts.value[0].date;
+  return posts.value[0]?.date ?? '—';
 });
 
 const visiblePosts = computed(() => {
