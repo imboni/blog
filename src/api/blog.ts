@@ -25,6 +25,8 @@ export const getPosts = async (type: 'blog' | 'message' = 'blog'): Promise<Post[
 
     return data
       .filter((issue) => {
+        const isPullRequest = Boolean(issue.pull_request);
+        if (isPullRequest) return false;
         const isMaintainer = ['OWNER', 'MEMBER', 'COLLABORATOR'].includes(issue.author_association || '');
         return type === 'blog' ? isMaintainer : !isMaintainer;
       })
