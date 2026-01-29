@@ -1,6 +1,6 @@
 # Boni's Blog
 
-开源的极简个人博客，内容来自 GitHub Issues。无需后端与数据库，专注于写作与阅读体验。适合部署到 GitHub Pages 或任意静态托管平台。你可以在[这里](https://imboni.github.io/blog/)查看。
+开源的极简个人博客，文章来自 GitHub Issues，评论使用 GitHub Discussions（giscus）。无需后端与数据库，专注于写作与阅读体验。适合部署到 GitHub Pages 或任意静态托管平台。你可以在[这里](https://imboni.github.io/blog/)查看。
 
 示例截图：
 
@@ -11,7 +11,8 @@
 
 
 ## 特性
-- **内容来源**：GitHub Issues 作为文章与留言的唯一数据源
+- **文章来源**：GitHub Issues 作为文章数据源
+- **评论系统**：giscus（GitHub Discussions）
 - **极简视觉**：单栏布局、统一字号与间距规则
 - **日/夜模式**：跟随系统，支持手动切换
 - **Markdown 渲染**：支持代码高亮与图片展示
@@ -49,6 +50,18 @@ cp .env.example .env
 - `VITE_GITHUB_TOKEN`：GitHub 个人访问令牌（用于读取 Issues）
 - `VITE_REPO_OWNER`：仓库所有者
 - `VITE_REPO_NAME`：仓库名称
+
+---
+
+## 评论系统（giscus）
+本项目已接入 giscus 评论组件（GitHub Discussions）。配置步骤：
+1) 在仓库启用 Discussions
+2) 安装 giscus GitHub App 并授权到该仓库
+3) 打开 giscus 配置页生成参数
+4) 将生成的参数填入 `src/components/Giscus.vue`
+
+关键配置字段：
+`data-repo`、`data-repo-id`、`data-category`、`data-category-id`、`data-mapping`、`data-theme`、`data-lang`
 
 本地开发：
 ```bash

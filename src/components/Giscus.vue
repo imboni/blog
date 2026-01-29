@@ -3,12 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
 
 const container = ref<HTMLDivElement | null>(null);
-const route = useRoute();
-
 const config = {
   repo: 'imboni/blog',
   repoId: 'R_kgDORCJG_w',
@@ -50,9 +47,4 @@ const loadGiscus = () => {
 };
 
 onMounted(loadGiscus);
-
-watch(
-  () => route.fullPath,
-  () => loadGiscus()
-);
 </script>
