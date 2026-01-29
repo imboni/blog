@@ -38,6 +38,11 @@
             </button>
           </div>
 
+          <section class="mt-16 pt-10 border-t border-slate-200">
+            <p class="text-[11px] tracking-[0.35em] text-slate-500 font-semibold text-center mb-6">留言</p>
+            <Giscus />
+          </section>
+
           <Footer />
         </div>
 
@@ -58,6 +63,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { getPosts, type Post } from '../api/blog';
 import Footer from '../components/Footer.vue';
+import Giscus from '../components/Giscus.vue';
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/base16/classic-light.css'; 
