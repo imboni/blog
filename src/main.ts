@@ -12,27 +12,40 @@ if (storedTheme === 'light' || storedTheme === 'dark') {
   document.documentElement.setAttribute('data-theme', prefersDark.matches ? 'dark' : 'light');
 }
 
-const decodeRedirect = (value: string) => {
-  try {
-    return decodeURIComponent(value);
-  } catch (_) {
-    return value;
+const normalizeRedirect = (value: string) => {
+  let next = value;
+  for (let i = 0; i < 2; i += 1) {
+    try {
+      const decoded = decodeURIComponent(next);
+      if (decoded === next) break;
+      next = decoded;
+    } catch (_) {
+      break;
+    }
   }
+  if (next.startsWith('http')) {
+    try {
+      const url = new URL(next);
+      next = `${url.pathname}${url.search}${url.hash}`;
+    } catch (_) {}
+  }
+  if (!next.startsWith('/')) {
+    next = `/${next}`;
+  }
+  return next;
 };
 
 (async () => {
   const redirect = new URLSearchParams(window.location.search).get('redirect');
-  const redirectTarget = redirect ? decodeRedirect(redirect) : null;
-  if (redirectTarget) {
-    window.history.replaceState(null, '', redirectTarget);
-  }
+  const redirectTarget = redirect ? normalizeRedirect(redirect) : null;
   await loadSiteConfig();
   if (siteConfig.value?.siteTitle) {
     document.title = siteConfig.value.siteTitle;
   }
   const app = createApp(App).use(router);
-  app.mount('#app');
-  if (redirectTarget && router.currentRoute.value.fullPath !== redirectTarget) {
+  if (redirectTarget) {
     await router.replace(redirectTarget);
   }
+  await router.isReady();
+  app.mount('#app');
 })();
