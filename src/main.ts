@@ -13,6 +13,11 @@ if (storedTheme === 'light' || storedTheme === 'dark') {
 }
 
 (async () => {
+  const redirect = new URLSearchParams(window.location.search).get('redirect');
+  if (redirect) {
+    const target = decodeURIComponent(redirect);
+    window.history.replaceState(null, '', target);
+  }
   await loadSiteConfig();
   if (siteConfig.value?.siteTitle) {
     document.title = siteConfig.value.siteTitle;

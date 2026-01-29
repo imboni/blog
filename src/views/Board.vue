@@ -24,8 +24,12 @@
                   <p class="text-xs font-semibold text-slate-400 tracking-[0.2em]">{{ msg.date }}</p>
                 </div>
               </div>
+              <p v-if="msg.body && msg.body.trim().length"
+                 class="text-slate-900 font-semibold text-base pl-14 mb-2">
+                {{ msg.title }}
+              </p>
               <p class="text-slate-600 leading-relaxed font-medium pl-14 whitespace-pre-wrap text-base">
-                {{ msg.body }}
+                {{ getMessageBody(msg) }}
               </p>
             </div>
           </div>
@@ -64,6 +68,10 @@ const messagesEmptyMessage = computed(() => {
   if (fetchFailed.value) return '留言加载失败，请稍后再试。';
   return '这里还没有留言，来写第一条吧。';
 });
+
+const getMessageBody = (msg: Post) => {
+  return msg.body && msg.body.trim().length ? msg.body : msg.title;
+};
 
 onMounted(async () => {
   try {
