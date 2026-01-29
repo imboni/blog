@@ -40,7 +40,7 @@
 
           <section class="mt-16 pt-10 border-t border-slate-200">
             <p class="text-[11px] tracking-[0.35em] text-slate-500 font-semibold text-center mb-6">留言</p>
-            <Giscus :key="giscusKey" />
+            <Giscus :key="giscusKey" mapping="specific" :term="discussionTerm" />
           </section>
 
           <Footer />
@@ -70,6 +70,7 @@ import 'highlight.js/styles/base16/classic-light.css';
 
 const route = useRoute();
 const giscusKey = computed(() => String(route.fullPath));
+const discussionTerm = computed(() => `post-${route.params.id ?? ''}`);
 const post = ref<Post | null>(null);
 const loading = ref(true);
 const fetchFailed = ref(false);
