@@ -9,7 +9,7 @@
             <p class="text-slate-500 font-medium text-base">欢迎留下问题、建议或片段想法。</p>
           </header>
 
-          <Giscus :key="giscusKey" />
+          <Giscus :key="giscusKey" mapping="specific" term="board" />
 
           <Footer />
         </div>

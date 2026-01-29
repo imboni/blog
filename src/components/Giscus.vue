@@ -6,12 +6,11 @@
 import { onMounted, ref } from 'vue';
 
 const container = ref<HTMLDivElement | null>(null);
-const config = {
+const baseConfig = {
   repo: 'imboni/blog',
   repoId: 'R_kgDORCJG_w',
   category: 'General',
   categoryId: 'DIC_kwDORCJG_84C1lRe',
-  mapping: 'pathname',
   strict: '0',
   reactionsEnabled: '1',
   emitMetadata: '0',
@@ -21,7 +20,7 @@ const config = {
   loading: 'lazy'
 };
 
-const loadGiscus = () => {
+const loadGiscus = (mapping: string, term?: string) => {
   if (!container.value) return;
   container.value.innerHTML = '';
 
@@ -30,21 +29,29 @@ const loadGiscus = () => {
   script.async = true;
   script.crossOrigin = 'anonymous';
 
-  script.setAttribute('data-repo', config.repo);
-  script.setAttribute('data-repo-id', config.repoId);
-  script.setAttribute('data-category', config.category);
-  script.setAttribute('data-category-id', config.categoryId);
-  script.setAttribute('data-mapping', config.mapping);
-  script.setAttribute('data-strict', config.strict);
-  script.setAttribute('data-reactions-enabled', config.reactionsEnabled);
-  script.setAttribute('data-emit-metadata', config.emitMetadata);
-  script.setAttribute('data-input-position', config.inputPosition);
-  script.setAttribute('data-theme', config.theme);
-  script.setAttribute('data-lang', config.lang);
-  script.setAttribute('data-loading', config.loading);
+  script.setAttribute('data-repo', baseConfig.repo);
+  script.setAttribute('data-repo-id', baseConfig.repoId);
+  script.setAttribute('data-category', baseConfig.category);
+  script.setAttribute('data-category-id', baseConfig.categoryId);
+  script.setAttribute('data-mapping', mapping);
+  if (term) {
+    script.setAttribute('data-term', term);
+  }
+  script.setAttribute('data-strict', baseConfig.strict);
+  script.setAttribute('data-reactions-enabled', baseConfig.reactionsEnabled);
+  script.setAttribute('data-emit-metadata', baseConfig.emitMetadata);
+  script.setAttribute('data-input-position', baseConfig.inputPosition);
+  script.setAttribute('data-theme', baseConfig.theme);
+  script.setAttribute('data-lang', baseConfig.lang);
+  script.setAttribute('data-loading', baseConfig.loading);
 
   container.value.appendChild(script);
 };
 
-onMounted(loadGiscus);
+const props = defineProps<{
+  mapping?: 'pathname' | 'specific';
+  term?: string;
+}>();
+
+onMounted(() => loadGiscus(props.mapping ?? 'pathname', props.term || undefined));
 </script>
