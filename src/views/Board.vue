@@ -9,7 +9,7 @@
             <p class="text-slate-500 font-medium text-base">欢迎留下问题、建议或片段想法。</p>
           </header>
 
-          <Giscus :key="'board'" />
+          <Giscus :key="giscusKey" />
 
           <Footer />
         </div>
@@ -23,9 +23,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import Footer from '../components/Footer.vue';
 import Giscus from '../components/Giscus.vue';
 
 const loading = ref(false);
+const route = useRoute();
+const giscusKey = computed(() => String(route.fullPath));
 </script>

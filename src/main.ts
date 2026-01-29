@@ -12,15 +12,27 @@ if (storedTheme === 'light' || storedTheme === 'dark') {
   document.documentElement.setAttribute('data-theme', prefersDark.matches ? 'dark' : 'light');
 }
 
+const decodeRedirect = (value: string) => {
+  try {
+    return decodeURIComponent(value);
+  } catch (_) {
+    return value;
+  }
+};
+
 (async () => {
   const redirect = new URLSearchParams(window.location.search).get('redirect');
-  if (redirect) {
-    const target = decodeURIComponent(redirect);
-    window.history.replaceState(null, '', target);
+  const redirectTarget = redirect ? decodeRedirect(redirect) : null;
+  if (redirectTarget) {
+    window.history.replaceState(null, '', redirectTarget);
   }
   await loadSiteConfig();
   if (siteConfig.value?.siteTitle) {
     document.title = siteConfig.value.siteTitle;
   }
-  createApp(App).use(router).mount('#app');
+  const app = createApp(App).use(router);
+  app.mount('#app');
+  if (redirectTarget && router.currentRoute.value.fullPath !== redirectTarget) {
+    await router.replace(redirectTarget);
+  }
 })();
