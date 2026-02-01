@@ -20,10 +20,7 @@ const baseConfig = {
   inputPosition: 'top',
   theme: 'preferred_color_scheme',
   lang: 'zh-CN',
-  loading: 'lazy',
-  // 新增：解决 Cookie/登录状态持久化的核心配置
-  cookieConsent: 'auto', // 自动适配 Cookie 授权
-  origin: window.location.origin // 显式指定博客根域名（解决跨域/子路径问题）
+  loading: 'lazy'
 };
 
 const props = defineProps<{
@@ -70,10 +67,6 @@ const loadGiscus = () => {
   script.setAttribute('data-theme', finalConfig.value.theme);
   script.setAttribute('data-lang', finalConfig.value.lang);
   script.setAttribute('data-loading', finalConfig.value.loading);
-  
-  // 新增：修复登录状态的核心属性
-  script.setAttribute('data-cookie-consent', finalConfig.value.cookieConsent);
-  script.setAttribute('data-origin', finalConfig.value.origin);
 
   // 存储 script 实例，方便后续清理
   giscusScript.value = script;
