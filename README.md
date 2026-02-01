@@ -22,8 +22,8 @@
 ## 技术栈
 - Vue 3 + Vite
 - Tailwind CSS + Less
-- Octokit（GitHub API）
-- MarkdownIt（Markdown 渲染）
+- GitHub REST API（fetch）
+- MarkdownIt + highlight.js
 
 ## 字体说明
 本项目使用开源字体 **Moon Stars Kai（月星楷）**：
@@ -47,7 +47,7 @@ cp .env.example .env
 ```
 
 然后在 `.env` 中填写：
-- `VITE_GITHUB_TOKEN`：GitHub 个人访问令牌（用于读取 Issues）
+- `VITE_GITHUB_TOKEN`：可选，GitHub 个人访问令牌（用于提升 API 限额）
 - `VITE_REPO_OWNER`：仓库所有者
 - `VITE_REPO_NAME`：仓库名称
 
