@@ -43,8 +43,8 @@ const normalizeRedirect = (value: string) => {
     next = `/${next}`;
   }
   if (next.includes('?') && next.includes('giscus=')) {
-    const [path, rest] = next.split('?');
-    const [query, hash] = rest.split('#');
+    const [path, rest = ''] = next.split('?');
+    const [query = '', hash] = rest.split('#');
     const safeQuery = query.replace(/\+/g, '%2B');
     next = `${path}?${safeQuery}${hash ? `#${hash}` : ''}`;
   }
