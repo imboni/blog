@@ -12,6 +12,14 @@ if (storedTheme === 'light' || storedTheme === 'dark') {
   document.documentElement.setAttribute('data-theme', prefersDark.matches ? 'dark' : 'light');
 }
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach((registration) => {
+      registration.unregister();
+    });
+  });
+}
+
 const normalizeRedirect = (value: string) => {
   let next = value;
   for (let i = 0; i < 2; i += 1) {
