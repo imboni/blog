@@ -3,20 +3,31 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import gsap from 'gsap';
 
 const cursorRef = ref<HTMLElement | null>(null);
+let moveHandler: ((event: MouseEvent) => void) | null = null;
 
 onMounted(() => {
-  window.addEventListener('mousemove', (e) => {
-    gsap.to(cursorRef.value, {
-      x: e.clientX,
-      y: e.clientY,
-      duration: 0.5,
-      ease: "power3.out"
-    });
-  });
+  const cursorEl = cursorRef.value;
+  if (!cursorEl) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const moveX = gsap.quickTo(cursorEl, 'x', { duration: 0.5, ease: 'power3.out' });
+  const moveY = gsap.quickTo(cursorEl, 'y', { duration: 0.5, ease: 'power3.out' });
+  moveHandler = (event) => {
+    moveX(event.clientX);
+    moveY(event.clientY);
+  };
+  window.addEventListener('mousemove', moveHandler);
+});
+
+onUnmounted(() => {
+  if (moveHandler) {
+    window.removeEventListener('mousemove', moveHandler);
+    moveHandler = null;
+  }
 });
 </script>
 

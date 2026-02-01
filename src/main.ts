@@ -12,20 +12,24 @@ if (storedTheme === 'light' || storedTheme === 'dark') {
   document.documentElement.setAttribute('data-theme', prefersDark.matches ? 'dark' : 'light');
 }
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then((registrations) => {
-    registrations.forEach((registration) => {
-      registration.unregister();
+const swCleanupKey = 'boni-sw-cleanup-v1';
+if (!localStorage.getItem(swCleanupKey)) {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister();
+      });
     });
-  });
-}
+  }
 
-if ('caches' in window) {
-  caches.keys().then((keys) => {
-    keys.forEach((key) => {
-      caches.delete(key);
+  if ('caches' in window) {
+    caches.keys().then((keys) => {
+      keys.forEach((key) => {
+        caches.delete(key);
+      });
     });
-  });
+  }
+  localStorage.setItem(swCleanupKey, '1');
 }
 
 const normalizeRedirect = (value: string) => {

@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { siteConfig, loadSiteConfig } from '../config/site';
 
 const theme = ref<'light' | 'dark'>('light');
@@ -40,6 +40,9 @@ const toggleTheme = () => {
 
 const themeLabel = computed(() => (theme.value === 'light' ? siteConfig.value.nav.themeDark : siteConfig.value.nav.themeLight));
 
+let mediaQuery: MediaQueryList | null = null;
+let mediaHandler: ((event: MediaQueryListEvent) => void) | null = null;
+
 onMounted(() => {
   loadSiteConfig();
   const saved = localStorage.getItem(storedKey) as 'light' | 'dark' | null;
@@ -47,12 +50,21 @@ onMounted(() => {
     applyTheme(saved);
     return;
   }
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-  applyTheme(prefersDark.matches ? 'dark' : 'light');
-  prefersDark.addEventListener('change', (event) => {
+  mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  applyTheme(mediaQuery.matches ? 'dark' : 'light');
+  mediaHandler = (event) => {
     if (!localStorage.getItem(storedKey)) {
       applyTheme(event.matches ? 'dark' : 'light');
     }
-  });
+  };
+  mediaQuery.addEventListener('change', mediaHandler);
+});
+
+onUnmounted(() => {
+  if (mediaQuery && mediaHandler) {
+    mediaQuery.removeEventListener('change', mediaHandler);
+  }
+  mediaQuery = null;
+  mediaHandler = null;
 });
 </script>

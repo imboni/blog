@@ -76,7 +76,7 @@ const loading = ref(true);
 const fetchFailed = ref(false);
 
 const md = new MarkdownIt({
-  html: true,
+  html: false,
   highlight: (str, lang) => {
     if (lang && hljs.getLanguage(lang)) {
       try {
