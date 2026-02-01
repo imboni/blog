@@ -20,6 +20,14 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+if ('caches' in window) {
+  caches.keys().then((keys) => {
+    keys.forEach((key) => {
+      caches.delete(key);
+    });
+  });
+}
+
 const normalizeRedirect = (value: string) => {
   let next = value;
   for (let i = 0; i < 2; i += 1) {
