@@ -30,15 +30,9 @@ if ('caches' in window) {
 
 const normalizeRedirect = (value: string) => {
   let next = value;
-  for (let i = 0; i < 2; i += 1) {
-    try {
-      const decoded = decodeURIComponent(next);
-      if (decoded === next) break;
-      next = decoded;
-    } catch (_) {
-      break;
-    }
-  }
+  try {
+    next = decodeURIComponent(next);
+  } catch (_) {}
   if (next.startsWith('http')) {
     try {
       const url = new URL(next);
@@ -47,6 +41,12 @@ const normalizeRedirect = (value: string) => {
   }
   if (!next.startsWith('/')) {
     next = `/${next}`;
+  }
+  if (next.includes('?') && next.includes('giscus=')) {
+    const [path, rest] = next.split('?');
+    const [query, hash] = rest.split('#');
+    const safeQuery = query.replace(/\+/g, '%2B');
+    next = `${path}?${safeQuery}${hash ? `#${hash}` : ''}`;
   }
   return next;
 };
