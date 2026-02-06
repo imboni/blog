@@ -1,5 +1,6 @@
 {
   "siteTitle": "Boni's blog",
+  "siteUrl": "https://imboni.cn",
   "siteName": "Welcome! I'm Boni",
   "tagline": "思考 / 代码 / 观察",
   "intro": "一些学习和日常的记录。",
@@ -10,6 +11,7 @@
     "posts": "首页",
     "board": "留言",
     "about": "关于",
+    "rss": "RSS",
     "themeLight": "日间",
     "themeDark": "夜间"
   },
@@ -30,4 +32,3 @@
     ]
   }
 }
-

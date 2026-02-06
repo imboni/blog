@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Boni&apos;s blog</title>
+    <link>https://imboni.cn</link>
+    <description>思考 / 代码 / 观察</description>
+    <language>zh-CN</language>
+    <atom:link href="https://imboni.cn/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 27 Jan 2026 07:56:33 GMT</lastBuildDate>
+    <item>
+      <title>Hello World!</title>
+      <link>https://imboni.cn/post/1</link>
+      <guid isPermaLink="true">https://imboni.cn/post/1</guid>
+      <pubDate>Tue, 27 Jan 2026 07:56:33 GMT</pubDate>
+      <description><![CDATA[Welcome!]]></description>
+      <content:encoded><![CDATA[<p>Welcome!</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
