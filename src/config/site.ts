@@ -6,12 +6,14 @@ export type SiteConfig = {
   tagline: string;
   intro: string;
   footerTemplate: string;
+  siteUrl?: string;
   repoUrl?: string;
   repoLabel?: string;
   nav: {
     posts: string;
     board: string;
     about: string;
+    rss: string;
     themeLight: string;
     themeDark: string;
   };
@@ -30,12 +32,14 @@ const defaultConfig: SiteConfig = {
   tagline: '创作 / 代码 / 观察',
   intro: '一些学习和日常的记录。',
   footerTemplate: '© {year} / 保留所有权利',
+  siteUrl: '',
   repoUrl: '',
   repoLabel: 'GitHub',
   nav: {
     posts: '文章',
     board: '留言',
     about: '关于',
+    rss: 'RSS',
     themeLight: '日间',
     themeDark: '夜间',
   },

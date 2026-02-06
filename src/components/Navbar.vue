@@ -8,6 +8,9 @@
         <router-link to="/" class="hover:text-slate-900 transition-colors">{{ siteConfig.nav.posts }}</router-link>
         <router-link to="/board" class="hover:text-slate-900 transition-colors">{{ siteConfig.nav.board }}</router-link>
         <router-link to="/about" class="hover:text-slate-900 transition-colors">{{ siteConfig.nav.about }}</router-link>
+        <a :href="rssUrl" class="hover:text-slate-900 transition-colors" rel="alternate" type="application/rss+xml">
+          {{ siteConfig.nav.rss || 'RSS' }}
+        </a>
         <button
           type="button"
           @click="toggleTheme"
@@ -39,6 +42,10 @@ const toggleTheme = () => {
 };
 
 const themeLabel = computed(() => (theme.value === 'light' ? siteConfig.value.nav.themeDark : siteConfig.value.nav.themeLight));
+const rssUrl = computed(() => {
+  const base = import.meta.env.BASE_URL || '/';
+  return base.replace(/\/$/, '') + '/rss.xml';
+});
 
 let mediaQuery: MediaQueryList | null = null;
 let mediaHandler: ((event: MediaQueryListEvent) => void) | null = null;

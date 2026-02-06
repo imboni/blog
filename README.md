@@ -1,6 +1,6 @@
 # Boni's Blog
 
-开源的极简个人博客，文章来自 GitHub Issues，评论使用 GitHub Discussions（giscus）。无需后端与数据库，专注于写作与阅读体验。适合部署到 GitHub Pages 或任意静态托管平台。你可以在[这里](https://imboni.github.io/blog/)查看。
+开源的极简个人博客，文章来自 GitHub Issues，评论使用 GitHub Discussions（giscus），并支持 RSS 订阅。无需后端与数据库，专注于写作与阅读体验。适合部署到 GitHub Pages 或任意静态托管平台。你可以在[这里](https://imboni.cn/)查看。
 
 示例截图：
 
@@ -16,6 +16,7 @@
 - **极简视觉**：单栏布局、统一字号与间距规则
 - **日/夜模式**：跟随系统，支持手动切换
 - **Markdown 渲染**：支持代码高亮与图片展示
+- **RSS 订阅**：构建时自动生成订阅源
 
 ---
 
@@ -40,6 +41,9 @@ npm install
 项目会在运行时读取 `public/site.config.json`，用于统一配置站点名称、介绍文案、导航文案、联系方式与关于页内容。  
 该文件会随仓库提交，你可以直接修改它来替换所有个人信息。
 
+新增字段：
+- `siteUrl`：站点的完整地址（用于生成 RSS）。
+
 ### 环境变量
 创建本地环境变量文件（不会提交到仓库）：
 ```bash
@@ -50,6 +54,7 @@ cp .env.example .env
 - `VITE_GITHUB_TOKEN`：可选，GitHub 个人访问令牌（用于提升 API 限额）
 - `VITE_REPO_OWNER`：仓库所有者
 - `VITE_REPO_NAME`：仓库名称
+- `VITE_SITE_URL`：可选，覆盖 `siteUrl`（用于生成 RSS）
 
 ---
 
@@ -72,6 +77,12 @@ npm run dev
 ```bash
 npm run build
 ```
+
+---
+
+## RSS
+构建时会自动生成 `public/rss.xml`，部署后访问：
+`/rss.xml`
 
 ---
 

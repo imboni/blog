@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env
+public/rss.xml
 
 # Editor directories and files
 .vscode/*
