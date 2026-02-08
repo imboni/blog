@@ -1,11 +1,11 @@
 <template>
-  <footer class="mt-12 flex items-center justify-between text-sm font-semibold text-slate-400 tracking-[0.2em]">
-    <span class="text-slate-600">{{ footerText }}</span>
+  <footer class="mt-12 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between text-xs sm:text-sm font-semibold text-slate-400 tracking-[0.12em] sm:tracking-[0.2em]">
+    <span class="text-slate-600 text-center sm:text-left">{{ footerText }}</span>
     <a
       v-if="siteConfig.repoUrl"
       :href="siteConfig.repoUrl"
       target="_blank"
-      class="text-slate-400 hover:text-slate-900 transition-colors"
+      class="text-slate-400 hover:text-slate-900 transition-colors text-center sm:text-right"
     >
       本网站已开源 · {{ siteConfig.repoLabel || 'Repo' }}
     </a>

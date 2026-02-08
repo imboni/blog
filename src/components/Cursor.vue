@@ -13,6 +13,7 @@ onMounted(() => {
   const cursorEl = cursorRef.value;
   if (!cursorEl) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
 
   const moveX = gsap.quickTo(cursorEl, 'x', { duration: 0.5, ease: 'power3.out' });
   const moveY = gsap.quickTo(cursorEl, 'y', { duration: 0.5, ease: 'power3.out' });
@@ -44,5 +45,11 @@ onUnmounted(() => {
   z-index: 9999;
   transform: translate(-50%, -50%);
   opacity: 0.5;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor {
+    display: none;
+  }
 }
 </style>

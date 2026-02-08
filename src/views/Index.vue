@@ -1,29 +1,30 @@
 <template>
-  <main class="page-shell max-w-3xl mx-auto px-6 md:px-8 pt-10 pb-24">
+  <main class="page-shell max-w-3xl mx-auto px-4 sm:px-6 md:px-8 pt-8 sm:pt-10 pb-16 sm:pb-24">
     <transition name="page-fade" appear>
       <div class="min-h-[60vh]">
         <div v-if="!loading">
-          <header class="mb-10 space-y-4">
-            <h1 class="text-3xl md:text-4xl font-semibold text-slate-900">{{ siteConfig.siteName }}</h1>
-            <p class="text-lg text-slate-500">{{ siteConfig.tagline }}</p>
+          <header class="mb-10 space-y-4 cinematic-in" style="--reveal-delay: 40ms;">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-900">{{ siteConfig.siteName }}</h1>
+            <p class="text-base sm:text-lg text-slate-500">{{ siteConfig.tagline }}</p>
             <p class="text-base text-slate-600">{{ siteConfig.intro }}</p>
             <div class="text-sm text-slate-400">最近更新 {{ lastUpdatedLabel }}</div>
           </header>
 
-          <section id="posts" class="mt-12 space-y-6">
-            <div class="flex items-center justify-between text-sm tracking-[0.3em] text-slate-500 font-semibold">
+          <section id="posts" class="mt-12 space-y-6 cinematic-in" style="--reveal-delay: 140ms;">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm tracking-[0.18em] sm:tracking-[0.3em] text-slate-500 font-semibold">
               <span>最新文章</span>
-              <span class="text-sm tracking-[0.2em] text-slate-400">共 {{ posts.length }} 篇</span>
+              <span class="text-xs sm:text-sm tracking-[0.14em] sm:tracking-[0.2em] text-slate-400">共 {{ posts.length }} 篇</span>
             </div>
             <div class="border-t border-slate-200 divide-y divide-slate-200">
               <div
-                v-for="post in visiblePosts"
+                v-for="(post, index) in visiblePosts"
                 :key="post.id"
                 @click="$router.push(`/post/${post.id}`)"
-                class="group py-5 cursor-pointer transition-colors"
+                class="group post-row cursor-pointer transition-colors cinematic-in"
+                :style="{ '--reveal-delay': `${220 + index * 60}ms` }"
               >
-                <div class="grid grid-cols-[140px_1fr] gap-5 items-center">
-                  <span class="text-base text-slate-500 tracking-[0.1em] whitespace-nowrap min-w-[140px]">
+                <div class="grid grid-cols-1 sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr] gap-2 sm:gap-5 items-start sm:items-center">
+                  <span class="text-sm sm:text-base text-slate-500 tracking-[0.1em] sm:whitespace-nowrap sm:min-w-[120px] md:min-w-[140px]">
                     {{ post.date }}
                   </span>
                   <h2 class="text-base md:text-lg font-semibold text-slate-900 group-hover:text-[color:var(--accent)] transition-colors">
@@ -55,10 +56,10 @@
             </div>
           </section>
 
-          <section class="mt-12 space-y-4">
+          <section class="mt-12 space-y-4 cinematic-in" style="--reveal-delay: 240ms;">
             <div class="text-sm tracking-[0.3em] text-slate-500 font-semibold">业余项目</div>
             <div v-if="projects.length" class="space-y-4">
-              <div v-for="project in projects" :key="project.name" class="space-y-1">
+              <div v-for="(project, index) in projects" :key="project.name" class="space-y-1 cinematic-in" :style="{ '--reveal-delay': `${290 + index * 70}ms` }">
                 <div class="text-sm text-slate-400 tracking-[0.2em]">{{ project.period }}</div>
                 <a :href="project.href" target="_blank" class="text-base font-semibold text-slate-900 hover:opacity-70 transition-opacity">
                   {{ project.name }}
@@ -69,9 +70,9 @@
             <p v-else class="text-base text-slate-400">暂无项目。</p>
           </section>
 
-          <section class="mt-12 space-y-3">
+          <section class="mt-12 space-y-3 cinematic-in" style="--reveal-delay: 340ms;">
             <div class="text-sm tracking-[0.3em] text-slate-500 font-semibold">保持联系</div>
-            <div class="text-base text-slate-600 space-x-5">
+            <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-base text-slate-600">
               <a
                 v-for="contact in contacts"
                 :key="contact.label"
@@ -85,7 +86,9 @@
             </div>
           </section>
 
-          <Footer />
+          <div class="cinematic-in" style="--reveal-delay: 430ms;">
+            <Footer />
+          </div>
         </div>
 
         <div v-else class="flex justify-center items-center py-32">

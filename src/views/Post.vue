@@ -1,12 +1,12 @@
 <template>
-  <main class="page-shell max-w-3xl mx-auto px-6 md:px-8 pt-10 pb-24">
+  <main class="page-shell max-w-3xl mx-auto px-4 sm:px-6 md:px-8 pt-8 sm:pt-10 pb-16 sm:pb-24">
     <transition name="page-fade" appear>
       <div class="min-h-[60vh]">
         <div v-if="!loading && post">
-          <nav class="mb-10">
+          <nav class="mb-10 cinematic-in" style="--reveal-delay: 40ms;">
             <button
               @click="$router.push('/')" 
-              class="group flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-[color:var(--accent)] transition-colors tracking-[0.35em]"
+              class="group flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-[color:var(--accent)] transition-colors tracking-[0.2em] sm:tracking-[0.35em]"
             >
               <span class="inline-flex items-center justify-center w-4 h-4 transition-transform group-hover:-translate-x-1">
                 <svg viewBox="0 0 24 24" class="w-4 h-4 block" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -17,33 +17,35 @@
             </button>
           </nav>
 
-          <header class="mb-10">
+          <header class="mb-10 cinematic-in" style="--reveal-delay: 120ms;">
             <div class="flex flex-wrap items-center gap-3 mb-5">
               <span v-for="tag in post.tags" :key="tag" class="text-xs font-semibold text-slate-600 px-2.5 py-1 rounded-full border border-slate-200">
                 {{ tag }}
               </span>
-              <span class="text-xs font-semibold text-slate-400 tracking-[0.25em]">{{ post.date }}</span>
+              <span class="text-xs font-semibold text-slate-400 tracking-[0.14em] sm:tracking-[0.25em]">{{ post.date }}</span>
             </div>
-            <h1 class="text-2xl md:text-3xl font-semibold leading-snug text-slate-900 mb-4">
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-semibold leading-snug text-slate-900 mb-4">
               {{ post.title }}
             </h1>
             <div class="h-px w-16 bg-slate-200"></div>
           </header>
 
-          <div class="markdown-body" v-html="renderedContent"></div>
+          <div class="markdown-body cinematic-in" style="--reveal-delay: 200ms;" v-html="renderedContent"></div>
 
-          <div class="mt-14 text-center">
-            <button @click="$router.push('/')" class="text-xs font-semibold tracking-[0.35em] text-slate-400 hover:text-[color:var(--accent)] transition-colors">
+          <div class="mt-14 text-center cinematic-in" style="--reveal-delay: 280ms;">
+            <button @click="$router.push('/')" class="text-xs font-semibold tracking-[0.2em] sm:tracking-[0.35em] text-slate-400 hover:text-[color:var(--accent)] transition-colors">
               结束阅读 · 返回目录
             </button>
           </div>
 
-          <section class="mt-16 pt-10 border-t border-slate-200">
+          <section class="mt-16 pt-10 border-t border-slate-200 cinematic-in" style="--reveal-delay: 360ms;">
             <p class="text-[11px] tracking-[0.35em] text-slate-500 font-semibold text-center mb-6">留言</p>
             <Giscus :key="giscusKey" mapping="specific" :term="discussionTerm" />
           </section>
 
-          <Footer />
+          <div class="cinematic-in" style="--reveal-delay: 430ms;">
+            <Footer />
+          </div>
         </div>
 
         <div v-else-if="!loading && !post" class="py-20 text-sm text-slate-400 text-center">
