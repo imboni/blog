@@ -20,15 +20,15 @@
                 v-for="(post, index) in visiblePosts"
                 :key="post.id"
                 @click="$router.push(`/post/${post.id}`)"
-                class="group post-row cursor-pointer transition-colors cinematic-in"
+                class="post-row cursor-pointer cinematic-in"
                 :style="{ '--reveal-delay': `${220 + index * 60}ms` }"
               >
                 <div class="grid grid-cols-1 sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr] gap-2 sm:gap-5 items-start sm:items-center">
                   <span class="text-sm sm:text-base text-slate-500 tracking-[0.1em] sm:whitespace-nowrap sm:min-w-[120px] md:min-w-[140px]">
                     {{ post.date }}
                   </span>
-                  <h2 class="text-base md:text-lg font-semibold text-slate-900 group-hover:text-[color:var(--accent)] transition-colors">
-                    {{ post.title }}
+                  <h2 class="text-base md:text-lg font-semibold text-slate-900">
+                    <span class="post-title-ink">{{ post.title }}</span>
                   </h2>
                 </div>
               </div>
