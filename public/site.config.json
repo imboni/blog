@@ -3,7 +3,7 @@
   "siteUrl": "https://imboni.cn",
   "siteName": "Welcome! I'm Boni",
   "tagline": "思考 / 代码 / 观察",
-  "intro": "一些学习和日常的记录。",
+  "intro": "在世间，本就是各人下雪，各人有各人的隐晦和皎洁。",
   "footerTemplate": "© {year} BONI / 保留所有权利",
   "repoUrl": "https://github.com/imboni/blog",
   "repoLabel": "Repo",
@@ -23,7 +23,7 @@
   "projects": [],
   "about": {
     "title": "关于",
-    "subtitle": "改变自己需要努力坚持。",
+    "subtitle": "做一些学习和日常。",
     "paragraphs": [
       "我是一名程序员，自从2022年大学毕业一直从事前端开发至今。",
       "我用写的方式整理内容，保留对自身的审视和生活的思考。",
