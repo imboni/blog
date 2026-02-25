@@ -17,19 +17,15 @@
 @subtle-dark: rgba(226, 232, 240, 0.55);
 @ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 
-.font-face(@name, @file, @weight) {
-  @path: "./assets/fonts/MoonStarsKaiTTF/@{file}";
-  @font-face {
-    font-family: @name;
-    src: url(@path) format("truetype");
-    font-weight: @weight;
-    font-style: normal;
-    font-display: swap;
-  }
+@font-face {
+  font-family: "MoonStarsKai";
+  src: url("./assets/fonts/MoonStarsKai/MoonStarsKai-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
-.font-face("MoonStarsKai", "MoonStarsKai-Regular.ttf", 400);
-.font-face("MoonStarsKai", "MoonStarsKai-Bold.ttf", 700);
+/* Keep a single weight to avoid an extra ~19MB font download. */
 
 :root {
   color-scheme: light;
