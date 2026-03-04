@@ -33,6 +33,7 @@
   color: @fg-light;
   --bg: @bg-light;
   --surface: @bg-light;
+  --status-bar-bg: #ffffff;
   --border: @border-light;
   --border-strong: @border-strong-light;
   --accent: @accent-light;
@@ -55,6 +56,7 @@ html[data-theme="dark"] {
   color: @fg-dark;
   --bg: @bg-dark;
   --surface: #0f1216;
+  --status-bar-bg: #0c0e12;
   --border: @border-dark;
   --border-strong: @border-strong-dark;
   --accent: @accent-dark;
@@ -367,8 +369,6 @@ html[data-theme="dark"] {
   .hover\:opacity-70:hover { opacity: 0.85; }
   .border-slate-200 { border-color: #1f2937; }
   .divide-slate-200 > :not([hidden]) ~ :not([hidden]) { border-color: #1f2937; }
-  .bg-white\/90 { background-color: rgba(12, 14, 18, 0.85); }
-
   .search-box {
     background: rgba(15, 18, 22, 0.88);
 

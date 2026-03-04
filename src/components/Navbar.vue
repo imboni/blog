@@ -1,5 +1,5 @@
 <template>
-  <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+  <nav class="site-nav sticky top-0 z-50 backdrop-blur border-b border-slate-200">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 md:px-10 min-h-14 flex items-center justify-between gap-3">
       <router-link
         to="/"
@@ -160,6 +160,10 @@ onUnmounted(() => {
 <style scoped lang="less">
 nav {
   padding-top: env(safe-area-inset-top, 0px);
+}
+
+.site-nav {
+  background-color: var(--status-bar-bg);
 }
 
 .menu-toggle {
