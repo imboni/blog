@@ -3,14 +3,9 @@ import './style.less'
 import App from './App.vue'
 import router from './router'
 import { loadSiteConfig, siteConfig } from './config/site'
+import { applyTheme, getInitialTheme } from './utils/theme'
 
-const storedTheme = localStorage.getItem('boni-theme');
-if (storedTheme === 'light' || storedTheme === 'dark') {
-  document.documentElement.setAttribute('data-theme', storedTheme);
-} else {
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-  document.documentElement.setAttribute('data-theme', prefersDark.matches ? 'dark' : 'light');
-}
+applyTheme(getInitialTheme());
 
 const swCleanupKey = 'boni-sw-cleanup-v1';
 if (!localStorage.getItem(swCleanupKey)) {

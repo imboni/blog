@@ -82,14 +82,15 @@
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { siteConfig, loadSiteConfig } from '../config/site';
+import { applyTheme as applyThemeToDocument, getStoredTheme, THEME_STORAGE_KEY, type ThemeMode } from '../utils/theme';
 
-const theme = ref<'light' | 'dark'>('light');
-const storedKey = 'boni-theme';
+const theme = ref<ThemeMode>(document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+const storedKey = THEME_STORAGE_KEY;
 const mobileMenuOpen = ref(false);
 const route = useRoute();
 
-const applyTheme = (value: 'light' | 'dark') => {
-  document.documentElement.setAttribute('data-theme', value);
+const applyTheme = (value: ThemeMode) => {
+  applyThemeToDocument(value);
   theme.value = value;
 };
 
@@ -121,19 +122,19 @@ watch(() => route.fullPath, closeMobileMenu);
 
 onMounted(() => {
   loadSiteConfig();
-  const saved = localStorage.getItem(storedKey) as 'light' | 'dark' | null;
+  const saved = getStoredTheme();
   if (saved) {
     applyTheme(saved);
-    return;
+  } else {
+    mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    applyTheme(mediaQuery.matches ? 'dark' : 'light');
+    mediaHandler = (event) => {
+      if (!getStoredTheme()) {
+        applyTheme(event.matches ? 'dark' : 'light');
+      }
+    };
+    mediaQuery.addEventListener('change', mediaHandler);
   }
-  mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-  applyTheme(mediaQuery.matches ? 'dark' : 'light');
-  mediaHandler = (event) => {
-    if (!localStorage.getItem(storedKey)) {
-      applyTheme(event.matches ? 'dark' : 'light');
-    }
-  };
-  mediaQuery.addEventListener('change', mediaHandler);
 
   resizeHandler = () => {
     if (window.innerWidth >= 768) {
@@ -157,6 +158,10 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="less">
+nav {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
 .menu-toggle {
   border-radius: 999px;
   transition:
