@@ -41,6 +41,8 @@ npm install
 项目会在运行时读取 `public/site.config.json`，用于统一配置站点名称、介绍文案、导航文案、联系方式与关于页内容。  
 该文件会随仓库提交，你可以直接修改它来替换所有个人信息。
 
+首页「业余项目」会自动从 GitHub 拉取 `VITE_REPO_OWNER` 名下、非 fork 的公开仓库，并排除博客仓库（`VITE_REPO_NAME`）、`imboni-blog` 以及与用户名同名的 profile 仓库。
+
 新增字段：
 - `siteUrl`：站点的完整地址（用于生成 RSS）。
 

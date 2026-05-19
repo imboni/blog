@@ -97,16 +97,26 @@
 
           <section class="mt-12 space-y-4 cinematic-in" style="--reveal-delay: 240ms;">
             <div class="text-sm tracking-[0.3em] text-slate-500 font-semibold">业余项目</div>
-            <div v-if="projects.length" class="space-y-4">
-              <div v-for="(project, index) in projects" :key="project.name" class="space-y-1 cinematic-in" :style="{ '--reveal-delay': `${290 + index * 70}ms` }">
-                <div class="text-sm text-slate-400 tracking-[0.2em]">{{ project.period }}</div>
-                <a :href="project.href" target="_blank" class="text-base font-semibold text-slate-900 hover:opacity-70 transition-opacity">
-                  {{ project.name }}
-                </a>
-                <p class="text-base text-slate-600">{{ project.desc }}</p>
-              </div>
+            <div
+              v-if="projects.length"
+              class="project-grid"
+              :class="{ 'project-grid--cols-2': projects.length > 1 }"
+            >
+              <a
+                v-for="(project, index) in projects"
+                :key="project.name"
+                :href="project.href"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="project-card cinematic-in"
+                :style="{ '--reveal-delay': `${290 + index * 70}ms` }"
+              >
+                <span class="project-card__period">{{ project.period }}</span>
+                <span class="project-card__name">{{ project.name }}</span>
+                <p v-if="project.desc" class="project-card__desc">{{ project.desc }}</p>
+              </a>
             </div>
-            <p v-else class="text-base text-slate-400">暂无项目。</p>
+            <p v-else class="text-base text-slate-400">{{ projectsEmptyMessage }}</p>
           </section>
 
           <section class="mt-12 space-y-3 cinematic-in" style="--reveal-delay: 340ms;">
@@ -142,17 +152,24 @@
 import { ref, onMounted, computed, watch } from 'vue';
 import Fuse from 'fuse.js';
 import { getPosts, type Post } from '../api/blog';
+import { getProjects, type Project } from '../api/projects';
 import Footer from '../components/Footer.vue';
 import { siteConfig, loadSiteConfig } from '../config/site';
 
 const posts = ref<Post[]>([]);
+const projects = ref<Project[]>([]);
 const loading = ref(true);
 const fetchFailed = ref(false);
+const projectsFailed = ref(false);
 const pageSize = 5;
 const page = ref(1);
 const searchQuery = ref('');
-const projects = computed(() => siteConfig.value.projects || []);
 const contacts = computed(() => siteConfig.value.contacts || []);
+
+const projectsEmptyMessage = computed(() => {
+  if (projectsFailed.value) return '项目加载失败，请稍后再试。';
+  return '暂无项目。';
+});
 
 const firstPost = computed(() => (posts.value.length ? posts.value[0] : null));
 const lastUpdatedLabel = computed(() => firstPost.value?.date ?? '—');
@@ -287,9 +304,16 @@ function buildHighlightSegments(text: string, ranges: MatchRange[]): HighlightSe
 
 onMounted(async () => {
   try {
-    loadSiteConfig();
-    const data = await getPosts();
+    await loadSiteConfig();
+    const [data, projectList] = await Promise.all([
+      getPosts(),
+      getProjects().catch(() => {
+        projectsFailed.value = true;
+        return [] as Project[];
+      }),
+    ]);
     posts.value = data.sort((a, b) => b.id - a.id);
+    projects.value = projectList;
     page.value = 1;
     fetchFailed.value = false;
   } catch (_) {
