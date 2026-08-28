@@ -59,7 +59,7 @@ export const getProjects = async (): Promise<Project[]> => {
 
     return data
       .filter((repo) => {
-        if (repo.fork) return false;
+        if (repo.archived) return false;
         const name = String(repo.name || '').toLowerCase();
         return !excludedRepoNames.has(name);
       })
