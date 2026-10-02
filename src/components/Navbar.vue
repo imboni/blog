@@ -46,7 +46,6 @@ onUnmounted(() => {
   <header ref="navRoot" class="site-nav" @focusout="onFocusOut">
     <div class="nav-frame glass-surface">
       <RouterLink to="/" class="nav-brand" @click="closeMenu">
-        <img class="nav-avatar" src="/logo.png" width="32" height="32" alt="" />
         <span>{{ siteConfig.siteTitle }}</span>
       </RouterLink>
       <div class="nav-actions">
@@ -81,14 +80,13 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.site-nav { position: sticky; top: max(16px, env(safe-area-inset-top)); z-index: 50; width: min(1060px, calc(100% - 56px)); margin: 24px auto 0; }
-.nav-frame { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 64px; padding: 8px 10px 8px 18px; border-radius: 999px; background-color: var(--toolbar-glass); }
-.nav-brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; color: var(--ink); font-size: 16px; font-weight: 600; letter-spacing: -.03em; line-height: 1.3; transition: opacity var(--duration-exit) ease; }
+.site-nav { position: sticky; top: max(16px, env(safe-area-inset-top)); z-index: 50; width: min(704px, calc(100% - 64px)); margin: 24px auto 0; }
+.nav-frame { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 60px; padding: 7px 8px 7px 23px; border-radius: 999px; background-color: var(--toolbar-glass); }
+.nav-brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; color: var(--ink); font-size: 15px; font-weight: 600; letter-spacing: -.025em; line-height: 1.3; transition: opacity var(--duration-exit) ease; }
 .nav-brand:active { opacity: .65; }
-.nav-avatar { flex: none; width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
 .nav-actions { display: flex; align-items: center; gap: 4px; flex: none; }
-.nav-tabs { display: grid; grid-template-columns: repeat(3, 68px); position: relative; isolation: isolate; }
-.nav-indicator { position: absolute; top: 0; left: 0; z-index: -1; width: 68px; height: 44px; border-radius: 999px; background: var(--glass-selection); transition: transform var(--duration-move) var(--ease-out); }
+.nav-tabs { display: grid; grid-template-columns: repeat(3, 62px); position: relative; isolation: isolate; }
+.nav-indicator { position: absolute; top: 0; left: 0; z-index: -1; width: 62px; height: 44px; border-radius: 999px; background: var(--glass-selection); box-shadow: inset 0 1px 0 var(--surface-top); transition: transform var(--duration-move) var(--ease-out); }
 .nav-tab { display: grid; place-items: center; height: 44px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); transition: color var(--duration-exit) ease, transform var(--duration-exit) var(--ease-out); }
 .nav-tab.is-active { color: var(--ink); }
 .nav-tab:active { transform: scale(.96); }
@@ -114,11 +112,12 @@ onUnmounted(() => {
 .theme-symbol-enter-from, .theme-symbol-leave-to { opacity: 0; transform: rotate(-20deg) scale(.9); }
 @media (hover: hover) and (pointer: fine) { .nav-tab:hover { color: var(--ink); } .mobile-nav-link:hover { background: var(--glass-selection); } }
 @media (max-width: 639px) {
-  .site-nav { width: calc(100% - 32px); top: max(12px, env(safe-area-inset-top)); margin-top: 16px; }
-  .nav-frame { min-height: 60px; padding: 6px 8px 6px 14px; gap: 12px; }
+  .site-nav { top: max(12px, env(safe-area-inset-top)); margin-top: 16px; }
+  .nav-frame { min-height: 58px; padding: 6px 7px 6px 20px; gap: 12px; }
   .nav-brand { font-size: 15px; gap: 10px; }
   .nav-tabs, .nav-divider, .nav-rss { display: none; }
   .menu-toggle { display: inline-grid; }
   .nav-actions { gap: 2px; }
 }
+@media (max-width: 600px) { .site-nav { width: calc(100% - 40px); } }
 </style>

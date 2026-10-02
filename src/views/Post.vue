@@ -71,7 +71,7 @@ const discussionTerm = computed(() => `post-${route.params.id ?? ''}`);
 .post-navigation { margin-bottom: 24px; }
 .post-back { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; }
 .post-back svg { width: 17px; height: 17px; transition: transform var(--duration-exit) var(--ease-out); }
-.post-paper { padding: 40px; }
+.post-paper { padding: 36px; }
 .post-heading { margin-bottom: 36px; }
 .post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 18px; }
 .post-tag { padding: 5px 11px; border-radius: 999px; background: var(--soft); color: var(--accent); font-size: 11px; line-height: 1.5; }
@@ -93,11 +93,12 @@ const discussionTerm = computed(() => `post-${route.params.id ?? ''}`);
   .post-back:hover svg { transform: translateX(-3px); }
 }
 @media (max-width: 600px) {
-  .post-navigation { margin-bottom: 20px; }
-  .post-paper { padding: 28px 24px; }
+  .post-page { padding-inline: 12px; }
+  .post-navigation { margin: 0 8px 20px; }
+  .post-paper { padding: 28px 22px; }
   .post-heading { margin-bottom: 28px; }
   .post-title { font-size: 27px; }
-  .post-comments { margin-top: 20px; padding: 28px 24px; }
+  .post-comments { margin-top: 20px; padding: 28px 22px; }
   .post-loading { padding: 28px 24px; }
 }
 @media (max-width: 380px) {
