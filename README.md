@@ -47,7 +47,7 @@ npm run dev
 
 文章读取 `VITE_REPO_OWNER` / `VITE_REPO_NAME` 指定仓库的 Issues，使用标题、正文、标签和创建日期，排除 Pull Requests，仅展示仓库所有者、成员和协作者发布的文章。文章地址继续使用 `/post/<issue 编号>`。
 
-首页“业余项目”自动读取该所有者的非 fork 公开仓库，并排除博客仓库、`imboni-blog` 及与用户名同名的 profile 仓库；当前列表不使用 `site.config.json` 中的 `projects` 字段。
+首页“业余项目”自动读取该所有者的公开仓库（包含 fork），排除已归档仓库、博客仓库、`imboni-blog` 及与用户名同名的 profile 仓库；当前列表不使用 `site.config.json` 中的 `projects` 字段。
 
 ### 评论与留言
 
@@ -93,4 +93,4 @@ npm run preview
 
 ## 字体
 
-2.0 沿用原版开源字体 [Moon Stars Kai（月星楷）](https://github.com/GuiWonder/MoonStarsKai)，使用仓库内的 Regular 字体文件及原有系统字体回退。字体与许可证保留在 [src/assets/fonts/MoonStarsKai/](src/assets/fonts/MoonStarsKai/)。
+2.0 沿用原版开源字体 [Moon Stars Kai（月星楷）](https://github.com/GuiWonder/MoonStarsKai)，保留已有的 WOFF2 子集与预加载优化，生产字体位于 [public/fonts/MoonStarsKai.woff2](public/fonts/MoonStarsKai.woff2)。未包含的字形回退到原有系统字体；完整 WOFF 字体不再随站点发布。字体说明与许可证位于 [src/assets/fonts/MoonStarsKai/](src/assets/fonts/MoonStarsKai/)。
