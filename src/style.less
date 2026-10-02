@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'MoonStarsKai';
+  src: url('./assets/fonts/MoonStarsKai/MoonStarsKai-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Catfish materials, with the blog's original single-column architecture. */
 :root {
   color-scheme: light;
@@ -29,8 +37,7 @@
   --syntax-keyword: #795b9c;
   --syntax-string: #4c7768;
   --syntax-number: #996445;
-  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --font: 'MoonStarsKai', 'PingFang SC', 'Microsoft YaHei UI', sans-serif;
   --radius-card: 24px;
   --radius-subtle: 18px;
   --radius-pill: 999px;
@@ -140,7 +147,7 @@ svg { display: block; flex: none; }
 .markdown-body blockquote > :last-child { margin-bottom: 0; }
 .markdown-body img { max-width: 100%; height: auto; margin: 28px auto; border-radius: 12px; }
 .markdown-body hr { margin: 36px 0; border: 0; border-top: 1px solid var(--line); }
-.markdown-body code { padding: 3px 6px; border-radius: 5px; background: var(--code-bg); color: var(--ink); font: .85em/1.8 var(--font-mono); }
+.markdown-body code { padding: 3px 6px; border-radius: 5px; background: var(--code-bg); color: var(--ink); font: .85em/1.8 var(--font); }
 .markdown-body pre { margin: 28px 0; padding: 22px; border-radius: 16px; background: var(--code-bg); overflow-x: auto; scrollbar-width: thin; }
 .markdown-body pre code { display: block; padding: 0; border-radius: 0; font-size: 13px; background: transparent; white-space: pre; }
 .markdown-body table { display: block; max-width: 100%; margin: 28px 0; border-collapse: collapse; overflow-x: auto; font-size: 14px; }
