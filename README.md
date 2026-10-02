@@ -12,7 +12,7 @@
 
 ## 2.0 视觉升级
 
-沿用 Catfish 的灰紫色、纸面与玻璃材质，保留原有单栏首页、文章、留言、关于页面及 GitHub Issues / Discussions 数据源。全站沿用原版月星楷字体，提供统一的浅色与深色主题、移动导航、搜索反馈、页面切换和文章图片预览。主题参数和通用样式集中在 `src/style.less`；首页组件位于 `src/components/home`，阅读组件位于 `src/components/reading`。
+沿用 Catfish 的灰紫色、纸面与玻璃材质，保留原有单栏首页、文章、留言、关于页面及 GitHub Issues / Discussions 数据源。全站沿用原版月星楷字体，提供统一的浅色与深色主题、半透明玻璃导航与首页卡片、首次分层入场、移动导航、搜索反馈、页面切换和文章图片预览。首次入场使用原生 Web Animations API，返回首页不重复播放，并尊重减少动态效果设置。主题参数和通用样式集中在 `src/style.less`；首页组件位于 `src/components/home`，阅读组件位于 `src/components/reading`。
 
 本地预览：`npm run dev`，默认地址为 `http://localhost:8003/`。
 

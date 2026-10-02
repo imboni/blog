@@ -20,10 +20,16 @@
   --hover: #e6e7ec;
   --accent: #726b80;
   --line: #edecf1;
-  --glass: #ffffff94;
-  --toolbar-glass: #f8f8fbb3;
-  --glass-sheen: #ffffff8c;
-  --glass-selection: #dedce7ad;
+  --glass: #ffffff52;
+  --toolbar-glass: #ffffff45;
+  --glass-sheen: #ffffff70;
+  --glass-selection: #ffffff70;
+  --glass-edge: #ffffffc7;
+  --glass-bottom: #a29bbd2b;
+  --glass-reflection: #ffffff80;
+  --ambient-lilac: #c7bcda;
+  --ambient-silver: #ccd7e0;
+  --ambient-pearl: #fbf8ff;
   --edge: #ffffffed;
   --rim: #8a839916;
   --shadow: #2c28450a;
@@ -65,10 +71,16 @@ html[data-theme='dark'] {
   --hover: #303139;
   --accent: #c4bdd2;
   --line: #383841;
-  --glass: #34343dcc;
-  --toolbar-glass: #282830b8;
-  --glass-sheen: #ffffff0d;
-  --glass-selection: #57526091;
+  --glass: #34333e52;
+  --toolbar-glass: #34323e61;
+  --glass-sheen: #ffffff12;
+  --glass-selection: #d4c9ee1c;
+  --glass-edge: #ffffff36;
+  --glass-bottom: #09090e52;
+  --glass-reflection: #dfd1ff1f;
+  --ambient-lilac: #494057;
+  --ambient-silver: #313e4c;
+  --ambient-pearl: #23232b;
   --edge: #ffffff14;
   --rim: #ffffff14;
   --shadow: #0000001c;
@@ -87,7 +99,7 @@ html[data-theme='dark'] {
 * { box-sizing: border-box; }
 html { min-width: 0; min-height: 100%; background: var(--bg); scrollbar-gutter: stable; scroll-padding-top: 110px; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink); font: 16px/1.8 var(--font); -webkit-font-smoothing: antialiased; }
-body::before { content: ''; position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse at 100% 100%, var(--glow), transparent 52%); pointer-events: none; }
+body::before { content: ''; position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse 45% 52% at 82% 12%, var(--ambient-lilac), transparent 88%), radial-gradient(ellipse 45% 40% at 7% 72%, var(--ambient-silver), transparent 92%), radial-gradient(ellipse 42% 45% at 46% 47%, var(--ambient-pearl), transparent 88%); pointer-events: none; }
 #app { position: relative; z-index: 1; isolation: isolate; min-height: 100vh; min-height: 100svh; }
 h1, h2, h3, p { margin: 0; }
 a { color: inherit; text-decoration: none; }
@@ -105,7 +117,10 @@ svg { display: block; flex: none; }
 .skip-link:focus { transform: none; }
 .page-shell { width: 100%; max-width: 768px; margin-inline: auto; padding: 48px 32px 64px; min-height: calc(100vh - 96px); }
 .surface-panel { min-width: 0; border-radius: var(--radius-card); background: var(--surface); background-image: linear-gradient(155deg, var(--surface-top), transparent 45%); box-shadow: inset 0 1px 0 var(--surface-rim), 0 2px 4px var(--shadow), 0 12px 30px var(--shadow); }
-.glass-surface { background: var(--glass); background-image: linear-gradient(135deg, var(--glass-sheen), transparent 48%); box-shadow: inset 0 1px 0 var(--edge), inset 0 0 0 1px var(--rim), inset 0 -1px 1px var(--rim), 0 7px 24px var(--floating-shadow); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); }
+.glass-surface { background: var(--glass); background-image: linear-gradient(135deg, var(--glass-sheen), transparent 42%, var(--glass-sheen) 160%); box-shadow: inset 0 1px 0 var(--glass-edge), inset 1px 0 0 var(--glass-edge), inset -1px 0 0 var(--rim), inset 0 -1px 0 var(--glass-bottom), 0 8px 28px var(--floating-shadow); -webkit-backdrop-filter: blur(24px) saturate(1.45); backdrop-filter: blur(24px) saturate(1.45); }
+.glass-interactive { position: relative; isolation: isolate; overflow: hidden; }
+.glass-interactive::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit; background: linear-gradient(115deg, transparent 8%, var(--glass-reflection) 38%, transparent 68%); opacity: 0; transform: translateX(-30%); transition: transform 560ms var(--ease-out), opacity 280ms ease; }
+.glass-interactive:focus-within::before { opacity: .55; transform: translateX(12%); }
 .icon-button { position: relative; display: inline-grid; place-items: center; flex: none; width: 44px; height: 44px; padding: 0; border-radius: var(--radius-pill); background: transparent; color: var(--ink); transition: transform var(--duration-exit) var(--ease-out), background-color var(--duration-exit) ease; }
 .icon-button svg { width: 20px; height: 20px; stroke-width: 1.75; }
 .soft-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px; border-radius: var(--radius-pill); color: var(--body); background: var(--soft); font-size: 13px; font-weight: 500; transition: transform var(--duration-exit) var(--ease-out), background-color var(--duration-exit) ease; }
@@ -116,6 +131,7 @@ svg { display: block; flex: none; }
 @keyframes skeleton-breathe { to { opacity: .45; } }
 @media (hover: hover) and (pointer: fine) {
   .icon-button:hover, .soft-button:hover { background-color: var(--glass-selection); }
+  .glass-interactive:hover::before { opacity: .75; transform: translateX(12%); }
 }
 
 /* Routes share one anchor and settle quickly; the navigation stays still. */
@@ -172,9 +188,10 @@ svg { display: block; flex: none; }
 }
 @media (prefers-reduced-transparency: reduce) {
   .glass-surface { background: var(--surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  body::before, .glass-interactive::before { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .icon-button:active, .soft-button:active { transform: none; }
 }
-html[data-input='keyboard'] *, html[data-input='keyboard'] *::before, html[data-input='keyboard'] *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; scroll-behavior: auto !important; }
+html[data-input='keyboard'] *, html[data-input='keyboard'] *::before, html[data-input='keyboard'] *::after { transition-duration: 0ms !important; transition-delay: 0ms !important; animation-duration: 0ms !important; animation-delay: 0ms !important; scroll-behavior: auto !important; }

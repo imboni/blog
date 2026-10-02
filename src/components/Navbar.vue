@@ -44,7 +44,7 @@ onUnmounted(() => {
 
 <template>
   <header ref="navRoot" class="site-nav" @focusout="onFocusOut">
-    <div class="nav-frame glass-surface">
+    <div class="nav-frame glass-surface glass-interactive">
       <RouterLink to="/" class="nav-brand" @click="closeMenu">
         <span>{{ siteConfig.siteTitle }}</span>
       </RouterLink>
@@ -81,12 +81,13 @@ onUnmounted(() => {
 
 <style scoped>
 .site-nav { position: sticky; top: max(16px, env(safe-area-inset-top)); z-index: 50; width: min(704px, calc(100% - 64px)); margin: 24px auto 0; }
-.nav-frame { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 60px; padding: 7px 8px 7px 23px; border-radius: 999px; background-color: var(--toolbar-glass); }
+.nav-frame { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 60px; padding: 7px 8px 7px 23px; border-radius: 999px; --glass: var(--toolbar-glass); transform-origin: center top; animation: nav-arrive 520ms var(--ease-out) backwards; }
+@keyframes nav-arrive { from { opacity: 0; transform: translateY(12px) scale(.985); } to { opacity: 1; transform: none; } }
 .nav-brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; color: var(--ink); font-size: 15px; font-weight: 600; letter-spacing: -.025em; line-height: 1.3; transition: opacity var(--duration-exit) ease; }
 .nav-brand:active { opacity: .65; }
 .nav-actions { display: flex; align-items: center; gap: 4px; flex: none; }
 .nav-tabs { display: grid; grid-template-columns: repeat(3, 62px); position: relative; isolation: isolate; }
-.nav-indicator { position: absolute; top: 0; left: 0; z-index: -1; width: 62px; height: 44px; border-radius: 999px; background: var(--glass-selection); box-shadow: inset 0 1px 0 var(--surface-top); transition: transform var(--duration-move) var(--ease-out); }
+.nav-indicator { position: absolute; top: 0; left: 0; z-index: -1; width: 62px; height: 44px; border-radius: 999px; background: var(--glass-selection); box-shadow: inset 0 1px 0 var(--glass-edge), inset 0 -1px 0 var(--glass-bottom), 0 2px 5px var(--shadow); transition: transform var(--duration-move) var(--ease-out); }
 .nav-tab { display: grid; place-items: center; height: 44px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); transition: color var(--duration-exit) ease, transform var(--duration-exit) var(--ease-out); }
 .nav-tab.is-active { color: var(--ink); }
 .nav-tab:active { transform: scale(.96); }
@@ -98,7 +99,7 @@ onUnmounted(() => {
 .menu-glyph span:last-child { bottom: 2px; }
 .menu-glyph.is-open span:first-child { transform: translateY(3px) rotate(45deg); }
 .menu-glyph.is-open span:last-child { transform: translateY(-3px) rotate(-45deg); }
-.mobile-navigation { position: absolute; top: calc(100% + 10px); right: 0; width: min(260px, 100%); padding: 8px; border-radius: 24px; transform-origin: calc(100% - 30px) top; background-color: var(--toolbar-glass); }
+.mobile-navigation { position: absolute; top: calc(100% + 10px); right: 0; width: min(260px, 100%); padding: 8px; border-radius: 24px; transform-origin: calc(100% - 30px) top; --glass: var(--toolbar-glass); }
 .mobile-nav-link { display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: 12px 18px; border-radius: 17px; font-size: 14px; color: var(--body); transition: background-color var(--duration-exit) ease, transform var(--duration-exit) var(--ease-out); }
 .mobile-nav-link:active { transform: scale(.98); }
 .mobile-nav-link.is-active { background: var(--glass-selection); color: var(--ink); }

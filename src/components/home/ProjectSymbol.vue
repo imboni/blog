@@ -24,6 +24,6 @@ const symbol = computed(() => {
 </template>
 
 <style scoped>
-.project-symbol { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; color: var(--accent); background: var(--bg); box-shadow: inset 0 1px 1px var(--rim), 0 1px 0 var(--surface-rim); }
+.project-symbol { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; color: var(--accent); background: var(--glass-selection); box-shadow: inset 0 1px 1px var(--rim), 0 1px 0 var(--surface-rim); }
 .project-symbol svg { width: 22px; height: 22px; }
 </style>

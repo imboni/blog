@@ -11,7 +11,7 @@ function clearSearch() {
 </script>
 
 <template>
-  <div class="post-search" role="search" aria-label="搜索文章">
+  <div class="post-search glass-surface" role="search" aria-label="搜索文章">
     <svg class="post-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
       <circle cx="10.75" cy="10.75" r="6.75" /><path d="m16 16 4.5 4.5" />
     </svg>
@@ -47,8 +47,6 @@ function clearSearch() {
   min-height: 46px;
   padding: 2px 3px 2px 16px;
   border-radius: 16px;
-  background: var(--glass);
-  box-shadow: inset 0 0 0 1px var(--surface-rim, var(--rim));
   isolation: isolate;
 }
 .post-search::after {
@@ -57,7 +55,7 @@ function clearSearch() {
   z-index: -1;
   inset: 0;
   border-radius: inherit;
-  background: var(--surface);
+  background: var(--glass-selection);
   box-shadow: 0 0 0 3px var(--focus-ring, var(--soft)), inset 0 0 0 1px var(--surface-rim, var(--rim));
   opacity: 0;
   pointer-events: none;

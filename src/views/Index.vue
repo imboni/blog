@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, useTemplateRef } from 'vue';
 import Footer from '../components/Footer.vue';
 import PostsSection from '../components/home/PostsSection.vue';
 import ProjectsSection from '../components/home/ProjectsSection.vue';
 import ContactsSection from '../components/home/ContactsSection.vue';
 import { siteConfig } from '../config/site';
 import { useHomeContent } from '../composables/useHomeContent';
+import { useHomeEntrance } from '../composables/useHomeEntrance';
+
+const props = defineProps<{ initialEntry?: boolean }>();
+const homePage = useTemplateRef<HTMLElement>('homePage');
+useHomeEntrance(homePage, { enabled: props.initialEntry === true });
 
 const greeting = computed(() => {
   const match = /^(Welcome!)\s*(.+)$/.exec(siteConfig.value.siteName);
@@ -16,22 +21,22 @@ const { posts, projects, postsLoading, projectsLoading, postsFailed, projectsFai
 </script>
 
 <template>
-  <main class="page-shell home-page">
+  <main ref="homePage" class="page-shell home-page">
     <header class="home-intro">
       <div class="home-intro-top">
-        <div class="home-intro-identity">
+        <div class="home-intro-identity" data-home-enter="0">
           <h1 class="home-title"><span v-if="greeting.welcome" class="home-welcome">{{ greeting.welcome }} </span><span class="home-name">{{ greeting.name }}</span></h1>
           <p class="home-tagline">{{ siteConfig.tagline }}</p>
         </div>
-        <div class="home-portrait" aria-hidden="true"><img src="/logo.png" alt="" width="88" height="88" /></div>
+        <div class="home-portrait" data-home-enter="25" aria-hidden="true"><img src="/logo.png" alt="" width="88" height="88" /></div>
       </div>
-      <p class="home-description">{{ siteConfig.intro }}</p>
-      <div class="home-updated"><span>最近更新</span><span class="home-updated-date">{{ lastUpdatedLabel }}</span></div>
+      <p class="home-description" data-home-enter="55">{{ siteConfig.intro }}</p>
+      <div class="home-updated" data-home-enter="80"><span>最近更新</span><span class="home-updated-date">{{ lastUpdatedLabel }}</span></div>
     </header>
-    <PostsSection :posts="posts" :loading="postsLoading" :failed="postsFailed" />
-    <ProjectsSection :projects="projects" :loading="projectsLoading" :failed="projectsFailed" />
-    <ContactsSection :contacts="siteConfig.contacts" />
-    <Footer />
+    <PostsSection data-home-enter="105" :posts="posts" :loading="postsLoading" :failed="postsFailed" />
+    <ProjectsSection data-home-enter="135" :projects="projects" :loading="projectsLoading" :failed="projectsFailed" />
+    <ContactsSection data-home-enter="165" :contacts="siteConfig.contacts" />
+    <Footer data-home-enter="190" />
   </main>
 </template>
 

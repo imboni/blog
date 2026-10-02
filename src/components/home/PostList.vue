@@ -5,7 +5,7 @@ defineProps<{ results: PostSearchResult[]; loading: boolean; emptyMessage: strin
 </script>
 
 <template>
-  <div id="post-results" class="posts-panel surface-panel" :aria-busy="loading">
+  <div id="post-results" class="posts-panel glass-surface" :aria-busy="loading">
     <Transition name="posts-state">
       <div v-if="loading" key="loading" class="posts-skeleton" role="status" aria-label="正在加载文章">
         <div v-for="index in 5" :key="index" class="post-skeleton-row" aria-hidden="true">

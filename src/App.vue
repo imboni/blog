@@ -5,6 +5,8 @@ import Navbar from './components/Navbar.vue';
 import { cancelRouteScroll, markRouteReady } from './router';
 
 const currentRoute = useRoute();
+// Only the cold home view gets the longer introduction; subsequent routes stay quick.
+const initialHomeEntry = currentRoute.name === 'Home';
 let readyFrame = 0;
 function onRouteEnter(element: Element) {
   cancelAnimationFrame(readyFrame);
@@ -40,7 +42,12 @@ onUnmounted(() => {
     <RouterView v-slot="{ Component, route }">
       <Transition name="route" mode="out-in" @enter="onRouteEnter">
         <KeepAlive include="Index" :max="1">
-          <component :is="Component" :key="route.path" :data-route-path="route.fullPath" />
+          <component
+            :is="Component"
+            :key="route.path"
+            v-bind="route.name === 'Home' ? { initialEntry: initialHomeEntry } : {}"
+            :data-route-path="route.fullPath"
+          />
         </KeepAlive>
       </Transition>
     </RouterView>
