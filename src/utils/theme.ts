@@ -3,8 +3,8 @@ export type ThemeMode = 'light' | 'dark';
 export const THEME_STORAGE_KEY = 'boni-theme';
 
 export const CHROME_COLOR_BY_THEME: Record<ThemeMode, string> = {
-  light: '#ffffff',
-  dark: '#0c0e12',
+  light: '#eff0f3',
+  dark: '#1b1c21',
 };
 
 const getThemeColorMeta = () => {
@@ -35,10 +35,10 @@ const forceMetaRepaint = (meta: HTMLMetaElement) => {
 };
 
 export const getStoredTheme = (): ThemeMode | null => {
-  const value = localStorage.getItem(THEME_STORAGE_KEY);
-  if (value === 'light' || value === 'dark') {
-    return value;
-  }
+  try {
+    const value = localStorage.getItem(THEME_STORAGE_KEY);
+    if (value === 'light' || value === 'dark') return value;
+  } catch { /* Storage can be unavailable in private browsing. */ }
   return null;
 };
 

@@ -1,4 +1,4 @@
-# Boni's Blog
+# Boni's Blog 2.0
 
 开源的极简个人博客，文章来自 GitHub Issues，评论使用 GitHub Discussions（giscus），并支持 RSS 订阅。无需后端与数据库，专注于写作与阅读体验。适合部署到 GitHub Pages 或任意静态托管平台。你可以在[这里](https://imboni.cn/)查看。
 
@@ -9,6 +9,12 @@
 </p>
 
 
+
+## 2.0 视觉升级
+
+沿用 Catfish 的灰紫色、纸面与玻璃材质，保留原有单栏首页、文章、留言、关于页面及 GitHub Issues / Discussions 数据源。全站改用系统字体，提供统一的浅色与深色主题、移动导航、搜索反馈、页面切换和文章图片预览。主题参数和通用样式集中在 `src/style.less`；首页组件位于 `src/components/home`，阅读组件位于 `src/components/reading`。
+
+本地预览：`npm run dev`，默认地址为 `http://localhost:8003/`。
 
 ## 特性
 - **文章来源**：GitHub Issues 作为文章数据源
@@ -27,7 +33,7 @@
 - MarkdownIt + highlight.js
 
 ## 字体说明
-本项目使用开源字体 **Moon Stars Kai（月星楷）**：
+2.0 默认使用系统字体；仓库保留原版开源字体 **Moon Stars Kai（月星楷）** 及许可证：
 [https://github.com/GuiWonder/MoonStarsKai](https://github.com/GuiWonder/MoonStarsKai)
 
 ---

@@ -18,7 +18,7 @@ const baseConfig = {
   reactionsEnabled: '1',
   emitMetadata: '0',
   inputPosition: 'top',
-  theme: 'preferred_color_scheme',
+  theme: 'light',
   lang: 'zh-CN',
   loading: 'lazy'
 };
@@ -64,7 +64,7 @@ const loadGiscus = () => {
   script.setAttribute('data-reactions-enabled', finalConfig.value.reactionsEnabled);
   script.setAttribute('data-emit-metadata', finalConfig.value.emitMetadata);
   script.setAttribute('data-input-position', finalConfig.value.inputPosition);
-  script.setAttribute('data-theme', finalConfig.value.theme);
+  script.setAttribute('data-theme', currentTheme());
   script.setAttribute('data-lang', finalConfig.value.lang);
   script.setAttribute('data-loading', finalConfig.value.loading);
 
@@ -78,13 +78,24 @@ watch([() => props.mapping, () => props.term], () => {
   loadGiscus();
 }, { immediate: false });
 
-// 组件挂载时加载
+const currentTheme = () => document.documentElement.dataset.theme === 'dark' ? 'transparent_dark' : 'light';
+let themeObserver: MutationObserver | null = null;
+const syncTheme = () => {
+  const frame = container.value?.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+  frame?.contentWindow?.postMessage({ giscus: { setConfig: { theme: currentTheme() } } }, 'https://giscus.app');
+};
+
 onMounted(() => {
   loadGiscus();
+  themeObserver = new MutationObserver(syncTheme);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  container.value?.addEventListener('load', syncTheme, true);
 });
 
 // 组件卸载时清理 script，避免内存泄漏
 onUnmounted(() => {
+  themeObserver?.disconnect();
+  container.value?.removeEventListener('load', syncTheme, true);
   if (giscusScript.value) {
     giscusScript.value.remove();
     giscusScript.value = null;
@@ -95,6 +106,7 @@ onUnmounted(() => {
 <style scoped>
 .giscus-wrapper {
   width: 100%;
-  margin: 20px 0;
+  min-height: 180px;
+  margin: 0;
 }
 </style>

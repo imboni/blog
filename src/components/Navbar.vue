@@ -1,226 +1,124 @@
-<template>
-  <nav class="site-nav sticky top-0 z-50 backdrop-blur border-b border-slate-200">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 md:px-10 min-h-14 flex items-center justify-between gap-3">
-      <router-link
-        to="/"
-        class="text-sm sm:text-base md:text-lg font-bold tracking-[0.14em] sm:tracking-[0.2em] md:tracking-[0.22em] text-slate-900"
-        @click="closeMobileMenu"
-      >
-        {{ siteConfig.siteTitle }}
-      </router-link>
-
-      <div
-        class="hidden md:flex items-center gap-4 md:gap-6 text-sm md:text-base font-medium tracking-[0.18em] md:tracking-[0.22em] text-slate-500"
-      >
-        <router-link to="/" class="nav-link hover:text-slate-900 transition-colors">{{ siteConfig.nav.posts }}</router-link>
-        <router-link to="/board" class="nav-link hover:text-slate-900 transition-colors">{{ siteConfig.nav.board }}</router-link>
-        <router-link to="/about" class="nav-link hover:text-slate-900 transition-colors">{{ siteConfig.nav.about }}</router-link>
-        <a :href="rssUrl" class="nav-link hover:text-slate-900 transition-colors" rel="alternate" type="application/rss+xml">
-          {{ siteConfig.nav.rss || 'RSS' }}
-        </a>
-        <button
-          type="button"
-          @click="toggleTheme"
-          class="flex items-center gap-1.5 h-6 py-0 text-sm md:text-base tracking-[0.2em] text-slate-500 hover:text-slate-900 transition-colors leading-none"
-        >
-          <span class="inline-flex items-center leading-none">{{ themeLabel }}</span>
-        </button>
-      </div>
-
-      <button
-        type="button"
-        class="menu-toggle md:hidden inline-flex h-8 w-8 items-center justify-center text-slate-600 hover:text-slate-900 transition-colors"
-        :aria-expanded="mobileMenuOpen"
-        aria-label="切换导航菜单"
-        @click="toggleMobileMenu"
-      >
-        <span class="menu-glyph" :class="{ 'is-open': mobileMenuOpen }">
-          <span class="menu-line menu-line-top"></span>
-          <span class="menu-line menu-line-mid"></span>
-          <span class="menu-line menu-line-bottom"></span>
-        </span>
-      </button>
-    </div>
-
-    <transition name="nav-reveal">
-      <div v-if="mobileMenuOpen" class="md:hidden nav-mobile-shell border-t border-slate-200">
-        <div class="mx-auto max-w-6xl px-4 py-3 flex flex-col gap-3 text-sm font-medium tracking-[0.14em] text-slate-600">
-          <router-link to="/" class="nav-mobile-item hover:text-slate-900 transition-colors" style="--item-index: 0;" @click="closeMobileMenu">
-            {{ siteConfig.nav.posts }}
-          </router-link>
-          <router-link to="/board" class="nav-mobile-item hover:text-slate-900 transition-colors" style="--item-index: 1;" @click="closeMobileMenu">
-            {{ siteConfig.nav.board }}
-          </router-link>
-          <router-link to="/about" class="nav-mobile-item hover:text-slate-900 transition-colors" style="--item-index: 2;" @click="closeMobileMenu">
-            {{ siteConfig.nav.about }}
-          </router-link>
-          <a
-            :href="rssUrl"
-            class="nav-mobile-item hover:text-slate-900 transition-colors"
-            rel="alternate"
-            type="application/rss+xml"
-            style="--item-index: 3;"
-            @click="closeMobileMenu"
-          >
-            {{ siteConfig.nav.rss || 'RSS' }}
-          </a>
-          <button
-            type="button"
-            @click="toggleTheme"
-            class="nav-mobile-item inline-flex w-fit items-center gap-1.5 h-6 py-0 text-sm tracking-[0.14em] text-slate-600 hover:text-slate-900 transition-colors leading-none"
-            style="--item-index: 4;"
-          >
-            <span class="inline-flex items-center leading-none">{{ themeLabel }}</span>
-          </button>
-        </div>
-      </div>
-    </transition>
-  </nav>
-</template>
-
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, shallowRef, useTemplateRef, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { siteConfig, loadSiteConfig } from '../config/site';
-import { applyTheme as applyThemeToDocument, getStoredTheme, THEME_STORAGE_KEY, type ThemeMode } from '../utils/theme';
+import { siteConfig } from '../config/site';
+import { useTheme } from '../composables/useTheme';
 
-const theme = ref<ThemeMode>(document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
-const storedKey = THEME_STORAGE_KEY;
-const mobileMenuOpen = ref(false);
 const route = useRoute();
-
-const applyTheme = (value: ThemeMode) => {
-  applyThemeToDocument(value);
-  theme.value = value;
+const { isDark, toggleTheme } = useTheme();
+const mobileMenuOpen = shallowRef(false);
+const navRoot = useTemplateRef<HTMLElement>('navRoot');
+const menuButton = useTemplateRef<HTMLButtonElement>('menuButton');
+const links = computed(() => [
+  { to: '/', label: siteConfig.value.nav.posts },
+  { to: '/board', label: siteConfig.value.nav.board },
+  { to: '/about', label: siteConfig.value.nav.about },
+]);
+const activeIndex = computed(() => route.path === '/board' ? 1 : route.path === '/about' ? 2 : 0);
+const themeLabel = computed(() => isDark.value ? '切换浅色模式' : '切换深色模式');
+const rssUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/rss.xml`;
+const closeMenu = () => { mobileMenuOpen.value = false; };
+const toggleMenu = () => { mobileMenuOpen.value = !mobileMenuOpen.value; };
+const onOutsideClick = (event: PointerEvent) => {
+  if (mobileMenuOpen.value && event.target instanceof Node && !navRoot.value?.contains(event.target)) closeMenu();
 };
-
-const toggleTheme = () => {
-  const next = theme.value === 'light' ? 'dark' : 'light';
-  applyTheme(next);
-  localStorage.setItem(storedKey, next);
+const onEscape = (event: KeyboardEvent) => {
+  if (event.key === 'Escape' && mobileMenuOpen.value) { closeMenu(); menuButton.value?.focus(); }
 };
-
-const toggleMobileMenu = () => {
-  mobileMenuOpen.value = !mobileMenuOpen.value;
+const onResize = () => { if (window.innerWidth >= 640) closeMenu(); };
+const onFocusOut = () => {
+  nextTick(() => { if (mobileMenuOpen.value && !navRoot.value?.contains(document.activeElement)) closeMenu(); });
 };
-
-const closeMobileMenu = () => {
-  mobileMenuOpen.value = false;
-};
-
-const themeLabel = computed(() => (theme.value === 'light' ? siteConfig.value.nav.themeDark : siteConfig.value.nav.themeLight));
-const rssUrl = computed(() => {
-  const base = import.meta.env.BASE_URL || '/';
-  return base.replace(/\/$/, '') + '/rss.xml';
-});
-
-let mediaQuery: MediaQueryList | null = null;
-let mediaHandler: ((event: MediaQueryListEvent) => void) | null = null;
-let resizeHandler: (() => void) | null = null;
-
-watch(() => route.fullPath, closeMobileMenu);
-
+watch(() => route.fullPath, closeMenu);
 onMounted(() => {
-  loadSiteConfig();
-  const saved = getStoredTheme();
-  if (saved) {
-    applyTheme(saved);
-  } else {
-    mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    applyTheme(mediaQuery.matches ? 'dark' : 'light');
-    mediaHandler = (event) => {
-      if (!getStoredTheme()) {
-        applyTheme(event.matches ? 'dark' : 'light');
-      }
-    };
-    mediaQuery.addEventListener('change', mediaHandler);
-  }
-
-  resizeHandler = () => {
-    if (window.innerWidth >= 768) {
-      closeMobileMenu();
-    }
-  };
-  window.addEventListener('resize', resizeHandler);
+  document.addEventListener('pointerdown', onOutsideClick);
+  document.addEventListener('keydown', onEscape);
+  window.addEventListener('resize', onResize);
 });
-
 onUnmounted(() => {
-  if (mediaQuery && mediaHandler) {
-    mediaQuery.removeEventListener('change', mediaHandler);
-  }
-  if (resizeHandler) {
-    window.removeEventListener('resize', resizeHandler);
-  }
-  mediaQuery = null;
-  mediaHandler = null;
-  resizeHandler = null;
+  document.removeEventListener('pointerdown', onOutsideClick);
+  document.removeEventListener('keydown', onEscape);
+  window.removeEventListener('resize', onResize);
 });
 </script>
 
-<style scoped lang="less">
-nav {
-  padding-top: env(safe-area-inset-top, 0px);
-}
+<template>
+  <header ref="navRoot" class="site-nav" @focusout="onFocusOut">
+    <div class="nav-frame glass-surface">
+      <RouterLink to="/" class="nav-brand" @click="closeMenu">
+        <img class="nav-avatar" src="/logo.png" width="32" height="32" alt="" />
+        <span>{{ siteConfig.siteTitle }}</span>
+      </RouterLink>
+      <div class="nav-actions">
+        <nav class="nav-tabs" aria-label="主要导航">
+          <span class="nav-indicator" :style="{ transform: `translateX(${activeIndex * 100}%)` }" aria-hidden="true"></span>
+          <RouterLink v-for="(link, index) in links" :key="link.to" :to="link.to" class="nav-tab" :class="{ 'is-active': index === activeIndex }" :aria-current="index === activeIndex ? 'page' : undefined">{{ link.label }}</RouterLink>
+        </nav>
+        <span class="nav-divider" aria-hidden="true"></span>
+        <a :href="rssUrl" class="icon-button nav-rss" aria-label="RSS 订阅" title="RSS 订阅" rel="alternate" type="application/rss+xml">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <button type="button" class="icon-button theme-toggle" :aria-label="themeLabel" :title="themeLabel" @click="toggleTheme">
+          <Transition name="theme-symbol" mode="out-in">
+            <svg v-if="isDark" key="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"/></svg>
+            <svg v-else key="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42m0-14.14-1.42 1.42M6.35 17.65l-1.42 1.42"/></svg>
+          </Transition>
+        </button>
+        <button ref="menuButton" type="button" class="icon-button menu-toggle" :aria-expanded="mobileMenuOpen" aria-controls="mobile-navigation" :aria-label="mobileMenuOpen ? '收起导航菜单' : '打开导航菜单'" @click="toggleMenu">
+          <span class="menu-glyph" :class="{ 'is-open': mobileMenuOpen }" aria-hidden="true"><span></span><span></span></span>
+        </button>
+      </div>
+    </div>
+    <Transition name="nav-reveal">
+      <nav v-if="mobileMenuOpen" id="mobile-navigation" class="mobile-navigation glass-surface" aria-label="移动端导航">
+        <RouterLink v-for="(link, index) in links" :key="link.to" :to="link.to" class="mobile-nav-link" :class="{ 'is-active': index === activeIndex }" :aria-current="index === activeIndex ? 'page' : undefined" @click="closeMenu">
+          {{ link.label }}<span class="mobile-current" aria-hidden="true"></span>
+        </RouterLink>
+        <a :href="rssUrl" class="mobile-nav-link mobile-rss" rel="alternate" type="application/rss+xml" @click="closeMenu">{{ siteConfig.nav.rss || 'RSS' }}<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="5" cy="19" r="1" fill="currentColor" stroke="none"/></svg></a>
+      </nav>
+    </Transition>
+  </header>
+</template>
 
-.site-nav {
-  background-color: var(--status-bar-bg);
-}
-
-.menu-toggle {
-  border-radius: 999px;
-  transition:
-    background-color var(--motion-duration) var(--motion-ease),
-    transform var(--motion-duration) var(--motion-ease);
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
-.menu-glyph {
-  width: 18px;
-  height: 14px;
-  position: relative;
-  display: inline-block;
-}
-
-.menu-line {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 1.7px;
-  border-radius: 999px;
-  background: currentColor;
-  transform-origin: center;
-  transition:
-    transform var(--motion-duration) var(--motion-ease),
-    opacity var(--motion-duration) var(--motion-ease);
-}
-
-.menu-line-top {
-  top: 0;
-}
-
-.menu-line-mid {
-  top: 6px;
-}
-
-.menu-line-bottom {
-  bottom: 0;
-}
-
-.menu-glyph.is-open {
-  .menu-line-top {
-    transform: translateY(6px) rotate(45deg);
-  }
-
-  .menu-line-mid {
-    opacity: 0;
-    transform: scaleX(0.2);
-  }
-
-  .menu-line-bottom {
-    transform: translateY(-6px) rotate(-45deg);
-  }
+<style scoped>
+.site-nav { position: sticky; top: max(16px, env(safe-area-inset-top)); z-index: 50; width: min(1060px, calc(100% - 56px)); margin: 24px auto 0; }
+.nav-frame { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 64px; padding: 8px 10px 8px 18px; border-radius: 999px; background-color: var(--toolbar-glass); }
+.nav-brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; color: var(--ink); font-size: 16px; font-weight: 600; letter-spacing: -.03em; line-height: 1.3; transition: opacity var(--duration-exit) ease; }
+.nav-brand:active { opacity: .65; }
+.nav-avatar { flex: none; width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+.nav-actions { display: flex; align-items: center; gap: 4px; flex: none; }
+.nav-tabs { display: grid; grid-template-columns: repeat(3, 68px); position: relative; isolation: isolate; }
+.nav-indicator { position: absolute; top: 0; left: 0; z-index: -1; width: 68px; height: 44px; border-radius: 999px; background: var(--glass-selection); transition: transform var(--duration-move) var(--ease-out); }
+.nav-tab { display: grid; place-items: center; height: 44px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); transition: color var(--duration-exit) ease, transform var(--duration-exit) var(--ease-out); }
+.nav-tab.is-active { color: var(--ink); }
+.nav-tab:active { transform: scale(.96); }
+.nav-divider { width: 1px; height: 18px; margin: 0 8px; background: var(--rim); }
+.menu-toggle { display: none; }
+.menu-glyph { position: relative; width: 18px; height: 12px; }
+.menu-glyph span { position: absolute; left: 0; width: 18px; height: 1.75px; background: currentColor; border-radius: 2px; transform-origin: center; transition: transform var(--duration-enter) var(--ease-out); }
+.menu-glyph span:first-child { top: 2px; }
+.menu-glyph span:last-child { bottom: 2px; }
+.menu-glyph.is-open span:first-child { transform: translateY(3px) rotate(45deg); }
+.menu-glyph.is-open span:last-child { transform: translateY(-3px) rotate(-45deg); }
+.mobile-navigation { position: absolute; top: calc(100% + 10px); right: 0; width: min(260px, 100%); padding: 8px; border-radius: 24px; transform-origin: calc(100% - 30px) top; background-color: var(--toolbar-glass); }
+.mobile-nav-link { display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: 12px 18px; border-radius: 17px; font-size: 14px; color: var(--body); transition: background-color var(--duration-exit) ease, transform var(--duration-exit) var(--ease-out); }
+.mobile-nav-link:active { transform: scale(.98); }
+.mobile-nav-link.is-active { background: var(--glass-selection); color: var(--ink); }
+.mobile-current { width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: 0; }
+.is-active .mobile-current { opacity: .7; }
+.mobile-rss { margin-top: 4px; }
+.nav-reveal-enter-active { transition: opacity var(--duration-enter) var(--ease-out), transform var(--duration-enter) var(--ease-out); }
+.nav-reveal-leave-active { transition: opacity var(--duration-exit) var(--ease-out), transform var(--duration-exit) var(--ease-out); }
+.nav-reveal-enter-from, .nav-reveal-leave-to { opacity: 0; transform: translateY(-4px) scale(.97); }
+.theme-symbol-enter-active, .theme-symbol-leave-active { transition: opacity 100ms var(--ease-out), transform 140ms var(--ease-out); }
+.theme-symbol-enter-from, .theme-symbol-leave-to { opacity: 0; transform: rotate(-20deg) scale(.9); }
+@media (hover: hover) and (pointer: fine) { .nav-tab:hover { color: var(--ink); } .mobile-nav-link:hover { background: var(--glass-selection); } }
+@media (max-width: 639px) {
+  .site-nav { width: calc(100% - 32px); top: max(12px, env(safe-area-inset-top)); margin-top: 16px; }
+  .nav-frame { min-height: 60px; padding: 6px 8px 6px 14px; gap: 12px; }
+  .nav-brand { font-size: 15px; gap: 10px; }
+  .nav-tabs, .nav-divider, .nav-rss { display: none; }
+  .menu-toggle { display: inline-grid; }
+  .nav-actions { gap: 2px; }
 }
 </style>

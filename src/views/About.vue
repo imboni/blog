@@ -1,29 +1,37 @@
-<template>
-  <main class="page-shell max-w-3xl mx-auto px-4 sm:px-6 md:px-8 pt-8 sm:pt-10 pb-16 sm:pb-24">
-    <transition name="page-fade" appear>
-      <div class="min-h-[60vh]">
-        <header class="mb-10 space-y-3 cinematic-in" style="--reveal-delay: 40ms;">
-          <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold text-slate-900">{{ siteConfig.about.title }}</h1>
-          <p class="text-base text-slate-500">{{ siteConfig.about.subtitle }}</p>
-        </header>
-
-        <section class="space-y-6 text-base text-slate-600 leading-relaxed cinematic-in" style="--reveal-delay: 140ms;">
-          <p v-for="(line, index) in siteConfig.about.paragraphs" :key="index" class="cinematic-in" :style="{ '--reveal-delay': `${190 + index * 80}ms` }">
-            {{ line }}
-          </p>
-        </section>
-
-        <div class="cinematic-in" style="--reveal-delay: 380ms;">
-          <Footer />
-        </div>
-      </div>
-    </transition>
-  </main>
-</template>
-
 <script setup lang="ts">
 import Footer from '../components/Footer.vue';
 import { siteConfig, loadSiteConfig } from '../config/site';
 
 loadSiteConfig();
 </script>
+
+<template>
+  <main class="page-shell about-page">
+    <article class="surface-panel about-paper">
+      <header class="about-heading">
+        <h1 class="about-title">{{ siteConfig.about.title }}</h1>
+        <p class="about-subtitle">{{ siteConfig.about.subtitle }}</p>
+      </header>
+      <section class="about-copy" aria-label="关于我">
+        <p v-for="(line, index) in siteConfig.about.paragraphs" :key="index">{{ line }}</p>
+      </section>
+    </article>
+    <Footer />
+  </main>
+</template>
+
+<style scoped>
+.about-page { min-height: 70vh; }
+.about-paper { padding: 40px; }
+.about-heading { margin-bottom: 36px; }
+.about-title { margin: 0 0 12px; color: var(--ink); font-size: 32px; font-weight: 600; line-height: 1.5; letter-spacing: -.035em; }
+.about-subtitle { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.9; }
+.about-copy { color: var(--body); font-size: 16px; line-height: 2; overflow-wrap: break-word; }
+.about-copy p { margin: 0 0 24px; }
+.about-copy p:last-child { margin-bottom: 0; }
+@media (max-width: 600px) {
+  .about-paper { padding: 28px 24px; }
+  .about-heading { margin-bottom: 28px; }
+  .about-title { font-size: 28px; }
+}
+</style>
