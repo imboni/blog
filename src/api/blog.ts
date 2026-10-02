@@ -1,5 +1,4 @@
 const apiBase = 'https://api.github.com';
-const token = import.meta.env.VITE_GITHUB_TOKEN as string | undefined;
 const owner = import.meta.env.VITE_REPO_OWNER as string;
 const repo = import.meta.env.VITE_REPO_NAME as string;
 const postsCache = new Map<string, Promise<Post[]>>();
@@ -24,9 +23,6 @@ export const getPosts = async (type: 'blog' | 'message' = 'blog'): Promise<Post[
       const headers: Record<string, string> = {
         Accept: 'application/vnd.github+json',
       };
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
       const res = await fetch(
         `${apiBase}/repos/${owner}/${repo}/issues?state=all&filter=created&per_page=100`,
         { headers }

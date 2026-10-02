@@ -37,7 +37,7 @@ const env = {
 
 const owner = env.VITE_REPO_OWNER;
 const repo = env.VITE_REPO_NAME;
-const token = env.VITE_GITHUB_TOKEN;
+const token = env.GITHUB_TOKEN;
 
 if (!owner || !repo) {
   console.error('Missing env. Required: VITE_REPO_OWNER, VITE_REPO_NAME');

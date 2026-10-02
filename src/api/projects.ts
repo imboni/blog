@@ -1,5 +1,4 @@
 const apiBase = 'https://api.github.com';
-const token = import.meta.env.VITE_GITHUB_TOKEN as string | undefined;
 const owner = import.meta.env.VITE_REPO_OWNER as string;
 const blogRepo = import.meta.env.VITE_REPO_NAME as string;
 
@@ -22,9 +21,6 @@ function githubHeaders(): Record<string, string> {
   const headers: Record<string, string> = {
     Accept: 'application/vnd.github+json',
   };
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
   return headers;
 }
 

@@ -24,10 +24,10 @@ jobs:
 
       - name: Install and Build
         run: |
-          npm install
+          npm ci
           npm run build
         env:
-          VITE_GITHUB_TOKEN: ${{ secrets.IMBONI_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VITE_REPO_OWNER: ${{ github.repository_owner }}
           VITE_REPO_NAME: ${{ github.event.repository.name }}
 

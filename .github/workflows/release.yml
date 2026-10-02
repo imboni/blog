@@ -23,4 +23,5 @@ jobs:
             echo "Release $tag already exists. Skipping."
             exit 0
           fi
-          gh release create "$tag" -t "$tag" -n "新增 RSS 订阅功能"
+          node scripts/release-notes.mjs "$tag" > "$RUNNER_TEMP/release-notes.md"
+          gh release create "$tag" --verify-tag --title "$tag" --notes-file "$RUNNER_TEMP/release-notes.md"
